@@ -1,4 +1,6 @@
 # SwissMedPreter
+<img width="831" height="875" alt="2a20e8ea7962971dce31436f53099ff35de27a104b570f1362f5be40e409bbca" src="https://github.com/user-attachments/assets/edd70a4e-d1b5-4651-b42e-0fd789260a20" />
+
 
 **AI-gestützte medizinische Übersetzungs-App für Schweizer Spitäler**
 
