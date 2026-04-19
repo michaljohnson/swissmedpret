@@ -1,0 +1,11 @@
+com\swissmedpreter\model\ConversationMessage.class
+com\swissmedpreter\service\LexiconService$1.class
+com\swissmedpreter\controller\ConversationSocketController.class
+com\swissmedpreter\SwissMedPreterApplication.class
+com\swissmedpreter\model\LexiconEntry.class
+com\swissmedpreter\service\LexiconService.class
+com\swissmedpreter\config\WebConfig.class
+com\swissmedpreter\service\ConversationSimulationService.class
+com\swissmedpreter\config\WebSocketConfig.class
+com\swissmedpreter\controller\LexiconController.class
+com\swissmedpreter\model\ConversationRequest.class

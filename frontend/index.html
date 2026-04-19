@@ -2,12 +2,44 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>swissmedpreter-frontend</title>
+    <title>SwissMedPreter Conversation</title>
   </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
+  <body class="bg-background">
+    <script>
+      (function () {
+        var validLocalPorts = ['5173', '5174', '5175'];
+        var isLocalHost = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+        var hasValidPort = validLocalPorts.indexOf(location.port) !== -1;
+
+        // If this file is opened from VS Code preview, file://, or another server,
+        // force navigation to the Vite dev server so TSX modules are executed.
+        if (location.protocol === 'file:' || !isLocalHost || !hasValidPort) {
+          location.replace('http://localhost:5173/');
+        }
+      })();
+    </script>
+    <noscript>
+      <div style="padding:16px;font-family:Segoe UI,Arial,sans-serif;color:#1f2937;">
+        JavaScript ist deaktiviert. Bitte aktiviere JavaScript und lade die Seite neu.
+      </div>
+    </noscript>
+    <div id="root" style="padding:16px;font-family:Segoe UI,Arial,sans-serif;color:#1f2937;">
+      SwissMedPreter wird geladen...
+    </div>
+    <script type="module">
+      import('/src/main.tsx').catch((error) => {
+        var root = document.getElementById('root');
+        if (!root) return;
+
+        var message = 'Frontend konnte nicht gestartet werden.';
+        if (error && typeof error === 'object' && 'message' in error) {
+          message += '\n\nFehler: ' + error.message;
+        }
+
+        root.style.whiteSpace = 'pre-wrap';
+        root.innerText = message + '\n\nBitte pruefe, ob Vite im frontend-Ordner laeuft (npm run dev).';
+      });
+    </script>
   </body>
 </html>

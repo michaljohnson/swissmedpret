@@ -1,51 +1,20 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-* {
-  box-sizing: border-box;
-}
-
-html, body {
-  margin: 0;
-  padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
-    'Helvetica Neue', sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+:root {
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: #1f2937;
+  background: #f4f8fb;
 }
 
 body {
-  background-color: #ffffff;
-  color: #333;
-}
-
-#root {
-  min-height: 100vh;
-  width: 100%;
   margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
+  min-width: 320px;
+  min-height: 100vh;
+  background: #f4f8fb;
 }
 
-@layer components {
-  .btn-primary {
-    @apply px-6 py-3 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 active:scale-95 transition-transform duration-150 disabled:opacity-50 disabled:cursor-not-allowed text-lg;
-  }
-
-  .btn-secondary {
-    @apply px-6 py-3 bg-gray-200 text-gray-800 font-semibold rounded-lg shadow-md hover:bg-gray-300 active:scale-95 transition-transform duration-150 disabled:opacity-50 disabled:cursor-not-allowed text-lg;
-  }
-
-  .btn-toggle {
-    @apply px-5 py-2 rounded-full font-medium text-sm transition-all duration-200;
-  }
-
-  .card {
-    @apply bg-white rounded-lg border border-gray-200 shadow-sm;
-  }
-
-  .medical-keyword {
-    @apply font-bold text-blue-600;
-  }
+* {
+  box-sizing: border-box;
 }
