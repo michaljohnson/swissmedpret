@@ -81,9 +81,8 @@ Frontend läuft auf `http://localhost:5173`
 Dieses MVP wurde als Fallstudie im ASE2-Modul entwickelt. Das Thema des Projekts ist **Multi-Agent-Systeme (MAS) in grossen komplexen Softwaresystemen**. Der MVP wurde mithilfe von Claude Cowork als Multi-Agent-System erstellt — mit parallelen Subagenten für Frontend, Backend und Qualitätssicherung.
 
 ## Team
-
-- Michal Johnson Mederlet
 - Pascal Helfenberger
+- Michal Johnson
 - Leona Kryeziu
 - Sivashan Sivakumaran
 
