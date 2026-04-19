@@ -1,0 +1,27 @@
+# Backend
+swissmedpreter-backend/build/
+swissmedpreter-backend/.gradle/
+swissmedpreter-backend/bin/
+*.class
+*.jar
+*.war
+
+# Frontend
+swissmedpreter-frontend/node_modules/
+swissmedpreter-frontend/dist/
+
+# IDE
+.idea/
+.vscode/
+*.iml
+.project
+.classpath
+.settings/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Env
+.env
+.env.local

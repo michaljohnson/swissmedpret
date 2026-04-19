@@ -1,0 +1,92 @@
+[
+  {
+    "german": "Handgelenk",
+    "english": "Wrist",
+    "pictogramUrl": "/pictograms/wrist.svg",
+    "category": "Körperteile"
+  },
+  {
+    "german": "Kopf",
+    "english": "Head",
+    "pictogramUrl": "/pictograms/head.svg",
+    "category": "Körperteile"
+  },
+  {
+    "german": "Herz",
+    "english": "Heart",
+    "pictogramUrl": "/pictograms/heart.svg",
+    "category": "Körperteile"
+  },
+  {
+    "german": "Lunge",
+    "english": "Lung",
+    "pictogramUrl": "/pictograms/lung.svg",
+    "category": "Körperteile"
+  },
+  {
+    "german": "Magen",
+    "english": "Stomach",
+    "pictogramUrl": "/pictograms/stomach.svg",
+    "category": "Körperteile"
+  },
+  {
+    "german": "Knie",
+    "english": "Knee",
+    "pictogramUrl": "/pictograms/knee.svg",
+    "category": "Körperteile"
+  },
+  {
+    "german": "Rücken",
+    "english": "Back",
+    "pictogramUrl": "/pictograms/back.svg",
+    "category": "Körperteile"
+  },
+  {
+    "german": "Fieber",
+    "english": "Fever",
+    "pictogramUrl": "/pictograms/fever.svg",
+    "category": "Symptome"
+  },
+  {
+    "german": "Schmerzen",
+    "english": "Pain",
+    "pictogramUrl": "/pictograms/pain.svg",
+    "category": "Symptome"
+  },
+  {
+    "german": "Übelkeit",
+    "english": "Nausea",
+    "pictogramUrl": "/pictograms/nausea.svg",
+    "category": "Symptome"
+  },
+  {
+    "german": "Infektion",
+    "english": "Infection",
+    "pictogramUrl": "/pictograms/infection.svg",
+    "category": "Diagnose"
+  },
+  {
+    "german": "Allergie",
+    "english": "Allergy",
+    "pictogramUrl": "/pictograms/allergy.svg",
+    "category": "Diagnose"
+  },
+  {
+    "german": "Tablette",
+    "english": "Tablet",
+    "pictogramUrl": "/pictograms/tablet.svg",
+    "category": "Medikamente"
+  },
+  {
+    "german": "Spritze",
+    "english": "Injection",
+    "pictogramUrl": "/pictograms/injection.svg",
+    "category": "Medikamente"
+  },
+  {
+    "german": "Blutdruck",
+    "english": "Blood Pressure",
+    "pictogramUrl": "/pictograms/blood-pressure.svg",
+    "category": "Messungen"
+  }
+]
