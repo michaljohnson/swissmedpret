@@ -1,14 +1,14 @@
 # Backend
-swissmedpreter-backend/build/
-swissmedpreter-backend/.gradle/
-swissmedpreter-backend/bin/
+backend/build/
+backend/.gradle/
+backend/bin/
 *.class
 *.jar
 *.war
 
 # Frontend
-swissmedpreter-frontend/node_modules/
-swissmedpreter-frontend/dist/
+frontend/node_modules/
+frontend/dist/
 
 # IDE
 .idea/
