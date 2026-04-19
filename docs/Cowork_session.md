@@ -15,30 +15,7 @@
 
 ---
 
-## Phase 1 — Report-Überarbeitung (funktionierte gut)
-
-**Prompts:** ~8
-**Fehler:** 1 (LaTeX-Parsing)
-
-Der Orchestrator überarbeitete die 3 Kapitel des ASE2-Reports direkt (ohne Subagenten). Das funktionierte effizient:
-
-| Schritt | Prompt (User)                                   | Ergebnis                                           |
-| ------- | ----------------------------------------------- | -------------------------------------------------- |
-| 1       | "Help me rewrite chapter 3, it's too general"   | Alle 3 Kapitel neu geschrieben, fokussiert auf MAS |
-| 2       | "Is this part of the task to name 2 use cases?" | Klärung — ja, gefordert lt. Aufgabenstellung     |
-| 3       | "Swap SEAMLESS for Microsoft AutoGen"           | Use Case 2 ersetzt                                 |
-| 4       | "Make margins smaller"                          | DIV=13 in KOMA-Script                              |
-| 5       | "Make title gaps smaller"                       | RedeclareSectionCommand in preamble.tex            |
-| 6       | "Don't start every chapter on new page"         | style=section für chapters                        |
-| 7       | "What exactly did you change?"                  | User wollte Transparenz über Änderungen          |
-
-**1 Fehler:** `\item [TODO:]` — LaTeX interpretierte `[TODO:]` als optionales Argument → Fix: `\item {[TODO:]}`
-
-**Bewertung:** ✅ Sehr gut. Direkte Textarbeit ohne Subagenten war schnell und präzise.
-
----
-
-## Phase 2 — MVP Code-Generierung (teilweise problematisch)
+## Phase 1 — MVP Code-Generierung (teilweise problematisch)
 
 **Prompts:** ~5
 **Subagenten:** 2 parallel (Frontend + Backend)
@@ -70,7 +47,7 @@ Der Orchestrator zerlegte die Aufgabe und startete zwei Subagenten parallel:
 
 ---
 
-## Phase 3 — Iteratives Debugging (aufwendig)
+## Phase 2 — Iteratives Debugging (aufwendig)
 
 **Prompts:** ~12 (alle Fehlermeldungen vom User)
 **Fehler gelöst:** 8
@@ -94,11 +71,10 @@ Jeder Fehler erforderte einen Human-in-the-Loop-Zyklus: User testet → meldet F
 
 ## Was gut funktionierte
 
-1. **Report-Überarbeitung** — Direkte Textarbeit des Orchestrators war schnell und präzise, kein Subagent nötig
-2. **Parallele Code-Generierung** — Frontend und Backend wurden gleichzeitig generiert, spart Zeit
-3. **Schnelle Diagnose** — Orchestrator konnte aus Fehlermeldungen/Screenshots meist sofort die Ursache identifizieren
-4. **Iterative Verbesserung** — Jeder Fix-Zyklus dauerte nur 1-3 Prompts
-5. **Architektur-Diagramme** — HTML-Diagramme wurden fehlerfrei generiert
+1. **Parallele Code-Generierung** — Frontend und Backend wurden gleichzeitig generiert, spart Zeit
+2. **Schnelle Diagnose** — Orchestrator konnte aus Fehlermeldungen/Screenshots meist sofort die Ursache identifizieren
+3. **Iterative Verbesserung** — Jeder Fix-Zyklus dauerte nur 1-3 Prompts
+4. **Architektur-Diagramme** — HTML-Diagramme wurden fehlerfrei generiert
 
 ## Was schlecht funktionierte
 
