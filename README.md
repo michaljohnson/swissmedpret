@@ -29,7 +29,7 @@ SwissMedPreter ermöglicht die Echtzeitkommunikation zwischen medizinischem Fach
 
 ```
 swissmedpreter/
-├── swissmedpreter-frontend/     # React-Frontend
+├── frontend/     # React-Frontend
 │   └── src/components/
 │       ├── ConversationPage.jsx  # Hauptseite mit WebSocket-Client
 │       ├── TranscriptPanel.jsx   # Bilingualer Chat
@@ -38,7 +38,7 @@ swissmedpreter/
 │       ├── LanguageSelector.jsx  # Sprachauswahl
 │       ├── Header.jsx            # App-Header
 │       └── MedicalPictograms.jsx # SVG-Piktogramme
-├── swissmedpreter-backend/      # Spring Boot Backend
+├── backend/      # Spring Boot Backend
 │   └── src/main/java/ch/zhaw/swissmedpreter/
 │       ├── config/               # WebSocket & CORS Config
 │       ├── controller/           # REST-Controller
@@ -59,7 +59,7 @@ swissmedpreter/
 ### Backend starten
 
 ```bash
-cd swissmedpreter-backend
+cd backend
 export JAVA_HOME=/opt/homebrew/opt/openjdk@17  # macOS
 ./gradlew bootRun
 ```
@@ -69,7 +69,7 @@ Backend läuft auf `http://localhost:8080`
 ### Frontend starten
 
 ```bash
-cd swissmedpreter-frontend
+cd frontend
 npm install
 npm run dev
 ```
