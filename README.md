@@ -6,8 +6,6 @@ SwissMedPreter enables real-time communication between medical staff and foreign
 
 > This repository contains the MVP (Minimum Viable Product), developed as a case study for the ASE2 module at ZHAW School of Engineering.
 
-<img width="817" height="859" alt="f1b1f4311090891eb818dcbf93526e72eaafe308ccabc95718585c3cc82c88d5" src="https://github.com/user-attachments/assets/62c2220b-06e6-4a7f-8ecd-3e8cc6c680dc" />
----
 
 ## Features
 

@@ -1,0 +1,145 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 990" font-family="Segoe UI, Arial, sans-serif">
+  <defs>
+    <filter id="shadow" x="-2%" y="-2%" width="104%" height="104%">
+      <feDropShadow dx="1" dy="2" stdDeviation="2" flood-opacity="0.1"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="990" fill="#fafafa" rx="8"/>
+
+  <!-- ===== HIGH LEVEL: Orchestrator ===== -->
+  <text x="30" y="30" font-size="13" fill="#888" font-weight="600">High Level</text>
+  <line x1="20" y1="40" x2="1180" y2="40" stroke="#ddd" stroke-dasharray="6,4"/>
+
+  <!-- Orchestrator Agent -->
+  <rect x="400" y="55" width="400" height="110" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="600" y="82" text-anchor="middle" font-size="16" font-weight="700" fill="#92400e">Orchestrator Agent</text>
+  <line x1="430" y1="92" x2="770" y2="92" stroke="#f59e0b" stroke-dasharray="3,3"/>
+  <text x="600" y="112" text-anchor="middle" font-size="11" fill="#78350f">Claude Cowork — LLM Planner</text>
+  <text x="600" y="128" text-anchor="middle" font-size="11" fill="#78350f">Task Decomposition · Delegating · Conflict Resolution</text>
+  <text x="600" y="144" text-anchor="middle" font-size="11" fill="#78350f">Context Management · Result Merging</text>
+
+  <!-- Lines from orchestrator to agents -->
+  <line x1="500" y1="165" x2="180" y2="240" stroke="#aaa" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="600" y1="165" x2="600" y2="240" stroke="#aaa" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="700" y1="165" x2="1020" y2="240" stroke="#aaa" stroke-width="1" stroke-dasharray="4,3"/>
+
+  <!-- ===== MIDDLE LEVEL: Agents ===== -->
+  <text x="30" y="220" font-size="13" fill="#888" font-weight="600">Middle Level</text>
+  <line x1="20" y1="230" x2="1180" y2="230" stroke="#ddd" stroke-dasharray="6,4"/>
+
+  <!-- Frontend Agent -->
+  <rect x="60" y="245" width="250" height="130" rx="8" fill="#fecaca" stroke="#ef4444" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="185" y="272" text-anchor="middle" font-size="15" font-weight="700" fill="#991b1b">Frontend Agent</text>
+  <line x1="85" y1="282" x2="285" y2="282" stroke="#ef4444" stroke-dasharray="3,3"/>
+  <text x="185" y="300" text-anchor="middle" font-size="11" fill="#7f1d1d">React 19 + Vite + Tailwind v4</text>
+  <text x="185" y="316" text-anchor="middle" font-size="11" fill="#7f1d1d">Split-Screen Dual Chat (ChatPanel)</text>
+  <text x="185" y="332" text-anchor="middle" font-size="11" fill="#7f1d1d">Language Selector (5 Sprachen)</text>
+  <text x="185" y="348" text-anchor="middle" font-size="11" fill="#7f1d1d">Medical Term Dialog (SVG Pictograms)</text>
+  <text x="185" y="364" text-anchor="middle" font-size="11" fill="#7f1d1d">Shadcn/ui + Radix UI</text>
+
+  <!-- Backend Agent -->
+  <rect x="475" y="245" width="250" height="130" rx="8" fill="#bbf7d0" stroke="#22c55e" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="600" y="272" text-anchor="middle" font-size="15" font-weight="700" fill="#14532d">Backend Agent</text>
+  <line x1="500" y1="282" x2="700" y2="282" stroke="#22c55e" stroke-dasharray="3,3"/>
+  <text x="600" y="300" text-anchor="middle" font-size="11" fill="#14532d">Spring Boot 3.4.1 (Java 17)</text>
+  <text x="600" y="316" text-anchor="middle" font-size="11" fill="#14532d">WebSocket Handler (STOMP)</text>
+  <text x="600" y="332" text-anchor="middle" font-size="11" fill="#14532d">TranslationService → DeepL API</text>
+  <text x="600" y="348" text-anchor="middle" font-size="11" fill="#14532d">LexiconService (Keyword Detection)</text>
+  <text x="600" y="364" text-anchor="middle" font-size="11" fill="#14532d">CORS Config + REST Controller</text>
+
+  <!-- QA Agent -->
+  <rect x="890" y="245" width="250" height="130" rx="8" fill="#ddd6fe" stroke="#8b5cf6" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="1015" y="272" text-anchor="middle" font-size="15" font-weight="700" fill="#3b0764">QA Agent</text>
+  <line x1="915" y1="282" x2="1115" y2="282" stroke="#8b5cf6" stroke-dasharray="3,3"/>
+  <text x="1015" y="300" text-anchor="middle" font-size="11" fill="#3b0764">Cross-Stack Consistency Check</text>
+  <text x="1015" y="316" text-anchor="middle" font-size="11" fill="#3b0764">Props Validation (React ↔ JSX)</text>
+  <text x="1015" y="332" text-anchor="middle" font-size="11" fill="#3b0764">API Contract Verification</text>
+  <text x="1015" y="348" text-anchor="middle" font-size="11" fill="#3b0764">Bug Detection + Auto-Fix</text>
+  <text x="1015" y="364" text-anchor="middle" font-size="11" fill="#3b0764">Accessibility (ARIA) Audit</text>
+
+  <!-- ===== EXTERNAL APIS ===== -->
+  <text x="30" y="415" font-size="13" fill="#888" font-weight="600">External APIs &amp; Services</text>
+  <line x1="20" y1="425" x2="1180" y2="425" stroke="#ddd" stroke-dasharray="6,4"/>
+
+  <!-- DeepL API -->
+  <rect x="120" y="445" width="220" height="85" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="230" y="472" text-anchor="middle" font-size="14" font-weight="700" fill="#1e3a8a">DeepL API Free</text>
+  <line x1="145" y1="480" x2="315" y2="480" stroke="#3b82f6" stroke-dasharray="3,3"/>
+  <text x="230" y="498" text-anchor="middle" font-size="11" fill="#1e3a8a">Bidirektionale Übersetzung</text>
+  <text x="230" y="514" text-anchor="middle" font-size="11" fill="#1e3a8a">DE ↔ EN / ES / FR / IT / JA</text>
+
+  <!-- Web Speech API -->
+  <rect x="490" y="445" width="220" height="85" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="600" y="472" text-anchor="middle" font-size="14" font-weight="700" fill="#1e3a8a">Web Speech API</text>
+  <line x1="515" y1="480" x2="685" y2="480" stroke="#3b82f6" stroke-dasharray="3,3"/>
+  <text x="600" y="498" text-anchor="middle" font-size="11" fill="#1e3a8a">Speech-to-Text (Chrome only)</text>
+  <text x="600" y="514" text-anchor="middle" font-size="11" fill="#1e3a8a">BCP-47 Codes: en-US, es-ES, ...</text>
+
+  <!-- WebSocket -->
+  <rect x="860" y="445" width="220" height="85" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="970" y="472" text-anchor="middle" font-size="14" font-weight="700" fill="#1e3a8a">WebSocket (STOMP)</text>
+  <line x1="885" y1="480" x2="1055" y2="480" stroke="#3b82f6" stroke-dasharray="3,3"/>
+  <text x="970" y="498" text-anchor="middle" font-size="11" fill="#1e3a8a">Echtzeit-Messaging</text>
+  <text x="970" y="514" text-anchor="middle" font-size="11" fill="#1e3a8a">Frontend ↔ Backend Bidirektional</text>
+
+  <!-- Arrows from agents to APIs -->
+  <path d="M 600 375 L 600 400 L 230 400 L 230 445" stroke="#3b82f6" stroke-width="1.2" fill="none" marker-end="url(#arrowBlue)"/>
+  <path d="M 185 375 L 185 400 L 600 400 L 600 445" stroke="#3b82f6" stroke-width="1.2" fill="none" marker-end="url(#arrowBlue)"/>
+  <path d="M 600 375 L 600 400 L 970 400 L 970 445" stroke="#3b82f6" stroke-width="1.2" fill="none" marker-end="url(#arrowBlue)"/>
+
+  <defs>
+    <marker id="arrowBlue" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M 0 0 L 8 3 L 0 6 Z" fill="#3b82f6"/>
+    </marker>
+  </defs>
+
+  <!-- ===== LOW LEVEL: Shared Context ===== -->
+  <text x="30" y="570" font-size="13" fill="#888" font-weight="600">Low Level</text>
+  <line x1="20" y1="580" x2="1180" y2="580" stroke="#ddd" stroke-dasharray="6,4"/>
+
+  <!-- Shared Context -->
+  <rect x="250" y="595" width="700" height="80" rx="8" fill="#e5e7eb" stroke="#9ca3af" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="600" y="622" text-anchor="middle" font-size="15" font-weight="700" fill="#374151">Shared Context</text>
+  <line x1="280" y1="632" x2="920" y2="632" stroke="#9ca3af" stroke-dasharray="3,3"/>
+  <text x="600" y="652" text-anchor="middle" font-size="11" fill="#374151">ASE1 Requirements · MVP Prompt Specification · Git Repository (Claude_Multi-Agent Branch)</text>
+  <text x="600" y="668" text-anchor="middle" font-size="11" fill="#374151">.env Configuration · DeepL API Key · SwissMedPreter Mockups · Medical Lexicon (10 Körperteile, 7 Sprachen)</text>
+
+  <!-- Lines from agents to shared context -->
+  <line x1="185" y1="375" x2="400" y2="595" stroke="#aaa" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="600" y1="375" x2="600" y2="595" stroke="#aaa" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="1015" y1="375" x2="800" y2="595" stroke="#aaa" stroke-width="1" stroke-dasharray="4,3"/>
+
+  <!-- ===== KEY DECISIONS (stacked single-column) ===== -->
+  <rect x="60" y="710" width="1080" height="230" rx="8" fill="#fffbeb" stroke="#f59e0b" stroke-width="1" filter="url(#shadow)"/>
+  <text x="600" y="738" text-anchor="middle" font-size="14" font-weight="700" fill="#92400e">Wichtige Architekturentscheide während der Entwicklung</text>
+  <line x1="90" y1="748" x2="1110" y2="748" stroke="#f59e0b" stroke-dasharray="3,3"/>
+
+  <!-- Decision 1 -->
+  <circle cx="100" cy="775" r="12" fill="#ef4444" opacity="0.15" stroke="#ef4444" stroke-width="1"/>
+  <text x="100" y="779" text-anchor="middle" font-size="10" font-weight="700" fill="#ef4444">1</text>
+  <text x="120" y="779" font-size="12" fill="#78350f" font-weight="600">MyMemory API → DeepL API Free:</text>
+  <text x="390" y="779" font-size="11" fill="#92400e">MyMemory konnte EN nicht von DE unterscheiden. DeepL liefert zuverlässige Ergebnisse.</text>
+
+  <!-- Decision 2 -->
+  <circle cx="100" cy="815" r="12" fill="#ef4444" opacity="0.15" stroke="#ef4444" stroke-width="1"/>
+  <text x="100" y="819" text-anchor="middle" font-size="10" font-weight="700" fill="#ef4444">2</text>
+  <text x="120" y="819" font-size="12" fill="#78350f" font-weight="600">Single-Chat → Split-Screen Dual Chat:</text>
+  <text x="430" y="819" font-size="11" fill="#92400e">Nachrichten-Reihenfolge war verwirrend. Getrennte Panels pro Rolle lösen das Problem.</text>
+
+  <!-- Decision 3 -->
+  <circle cx="100" cy="855" r="12" fill="#ef4444" opacity="0.15" stroke="#ef4444" stroke-width="1"/>
+  <text x="100" y="859" text-anchor="middle" font-size="10" font-weight="700" fill="#ef4444">3</text>
+  <text x="120" y="859" font-size="12" fill="#78350f" font-weight="600">Backend Language Fetch → Hardcoded 5 Sprachen:</text>
+  <text x="480" y="859" font-size="11" fill="#92400e">Backend-Endpoint überschrieb die gewünschte Auswahl mit 20+ DeepL-Sprachen.</text>
+
+  <!-- Decision 4 -->
+  <circle cx="100" cy="895" r="12" fill="#ef4444" opacity="0.15" stroke="#ef4444" stroke-width="1"/>
+  <text x="100" y="899" text-anchor="middle" font-size="10" font-weight="700" fill="#ef4444">4</text>
+  <text x="120" y="899" font-size="12" fill="#78350f" font-weight="600">Web Speech API mit Auto-Restart:</text>
+  <text x="390" y="899" font-size="11" fill="#92400e">Browser stoppt Erkennung bei Stille. onend-Handler mit stoppedManually-Flag hält Aufnahme aktiv.</text>
+
+  <!-- Bottom: H1-H4 mapping -->
+  <text x="600" y="970" text-anchor="middle" font-size="11" font-style="italic" fill="#999">Gelbe Karten = Herausforderungen aus Kapitel 1, auf deren Bewältigung diese Architektur ausgelegt ist</text>
+</svg>
