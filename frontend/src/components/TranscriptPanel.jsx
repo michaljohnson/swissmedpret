@@ -1,5 +1,17 @@
 import React, { useEffect, useRef } from 'react';
 
+function PatientIcon() {
+  return (
+    <img src="/icon-patient.svg" alt="Patient" width="36" height="36" className="rounded-full" />
+  );
+}
+
+function StaffIcon() {
+  return (
+    <img src="/icon-staff.svg" alt="Staff" width="36" height="36" className="rounded-full" />
+  );
+}
+
 const MEDICAL_KEYWORDS = [
   'kopf', 'handgelenk', 'herz', 'knie', 'schmerzen', 'fieber',
   'blutdruck', 'diagnose', 'medikament', 'behandlung', 'symptom',
@@ -44,41 +56,57 @@ export default function TranscriptPanel({ messages = [] }) {
   };
 
   return (
-    <div className="flex-1 flex flex-col gap-4 overflow-y-auto p-6 bg-white">
-      {messages.length === 0 ? (
-        <div className="flex items-center justify-center h-full text-gray-500">
-          <p className="text-center">
-            <span className="block text-lg font-semibold mb-2">No messages yet</span>
-            <span className="text-sm">Start a conversation to see translations here</span>
-          </p>
-        </div>
-      ) : (
-        messages.map((msg, idx) => (
-          <div
-            key={idx}
-            className={`flex ${msg.role === 'patient' ? 'justify-start' : 'justify-end'} gap-2`}
-          >
-            <div
-              className={`max-w-md rounded-lg px-4 py-3 shadow-sm ${
-                msg.role === 'patient'
-                  ? 'bg-blue-50 border border-blue-200 text-gray-900'
-                  : 'bg-green-50 border border-green-200 text-gray-900'
-              }`}
-            >
-              <div className="text-xs font-semibold text-gray-600 mb-1">
-                {msg.role === 'patient' ? 'Patient' : 'Staff'} · {msg.language.toUpperCase()}
-              </div>
-              <div className="text-sm leading-relaxed">
-                {renderTextWithHighlights(highlightMedicalTerms(msg.text))}
-              </div>
-              <div className="text-xs text-gray-500 mt-2 text-right">
-                {formatTime(msg.timestamp)}
-              </div>
-            </div>
+    <div className="flex-1 flex flex-col overflow-y-auto bg-gray-50">
+      <div className="max-w-2xl w-full mx-auto flex flex-col gap-4 p-4">
+        {messages.length === 0 ? (
+          <div className="flex items-center justify-center h-full text-gray-500 py-20">
+            <p className="text-center">
+              <span className="block text-lg font-semibold mb-2">Noch keine Nachrichten</span>
+              <span className="text-sm">Nachricht eingeben um die Übersetzung zu starten</span>
+            </p>
           </div>
-        ))
-      )}
-      <div ref={messagesEndRef} />
+        ) : (
+          messages.map((msg, idx) => (
+            <div
+              key={idx}
+              className={`flex items-end gap-2 ${msg.role === 'patient' ? 'justify-start' : 'justify-end'}`}
+            >
+              {msg.role === 'patient' && (
+                <div className="flex-shrink-0 mb-1">
+                  <PatientIcon />
+                </div>
+              )}
+              <div
+                className={`max-w-sm rounded-2xl px-4 py-2 shadow-sm ${
+                  msg.role === 'patient'
+                    ? 'bg-white border border-gray-200 text-gray-900 rounded-bl-sm'
+                    : 'bg-blue-500 text-white rounded-br-sm'
+                }`}
+              >
+                <div className={`text-xs font-medium mb-1 ${
+                  msg.role === 'patient' ? 'text-gray-500' : 'text-blue-100'
+                }`}>
+                  {msg.role === 'patient' ? 'Patient' : 'Staff'} · {msg.language.toUpperCase()}
+                </div>
+                <div className="text-sm leading-relaxed">
+                  {renderTextWithHighlights(highlightMedicalTerms(msg.text))}
+                </div>
+                <div className={`text-xs mt-1 text-right ${
+                  msg.role === 'patient' ? 'text-gray-400' : 'text-blue-200'
+                }`}>
+                  {formatTime(msg.timestamp)}
+                </div>
+              </div>
+              {msg.role === 'staff' && (
+                <div className="flex-shrink-0 mb-1">
+                  <StaffIcon />
+                </div>
+              )}
+            </div>
+          ))
+        )}
+        <div ref={messagesEndRef} />
+      </div>
     </div>
   );
 }

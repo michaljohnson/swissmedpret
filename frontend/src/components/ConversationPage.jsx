@@ -1,196 +1,188 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Header from './Header';
-import TranscriptPanel from './TranscriptPanel';
+import ChatPanel from './ChatPanel';
+import LanguageSelector from './LanguageSelector';
 import PictogramPanel from './PictogramPanel';
-import ControlBar from './ControlBar';
-
-const MOCK_TRANSLATIONS = {
-  'hello': { de: 'Hallo', ar: 'مرحبا' },
-  'how are you': { de: 'Wie geht es dir?', ar: 'كيف حالك؟' },
-  'i have pain': { de: 'Ich habe Schmerzen', ar: 'لدي ألم' },
-  'my head hurts': { de: 'Mein Kopf tut weh', ar: 'رأسي يؤلمني' },
-  'fever': { de: 'Fieber', ar: 'حمى' },
-  'wrist pain': { de: 'Handgelenkschmerzen', ar: 'آلام المعصم' },
-  'heart pain': { de: 'Herzschmerzen', ar: 'آلام القلب' },
-  'knee pain': { de: 'Knieschmerzen', ar: 'آلام الركبة' },
-};
 
 export default function ConversationPage() {
-  const [messages, setMessages] = useState([]);
-  const [selectedLanguage, setSelectedLanguage] = useState('es');
-  const [isRecording, setIsRecording] = useState(false);
-  const [isHandsFree, setIsHandsFree] = useState(false);
+  // Each panel gets its own message list showing the conversation in its language
+  const [patientMessages, setPatientMessages] = useState([]);
+  const [staffMessages, setStaffMessages] = useState([]);
+  const [selectedLanguage, setSelectedLanguage] = useState('en');
   const [connectionStatus, setConnectionStatus] = useState('connecting');
   const [detectedKeywords, setDetectedKeywords] = useState([]);
   const [showPictogramPanel, setShowPictogramPanel] = useState(false);
   const wsRef = useRef(null);
+  const pendingRef = useRef(null);
 
-  // WebSocket connection
+  const LANG_NAMES = { en: 'English', es: 'Español', fr: 'Français', it: 'Italiano', ja: '日本語' };
+
   useEffect(() => {
     const connectWebSocket = () => {
       try {
         wsRef.current = new WebSocket('ws://localhost:8080/ws/conversation');
 
         wsRef.current.onopen = () => {
-          console.log('WebSocket connected');
           setConnectionStatus('connected');
         };
 
         wsRef.current.onmessage = (event) => {
           try {
             const data = JSON.parse(event.data);
-            console.log('Received from WebSocket:', data);
+            const pending = pendingRef.current;
+            if (!pending || !data.translated) return;
 
-            // Add translated message to transcript
-            if (data.translated) {
-              setMessages((prev) => [
-                ...prev,
-                {
-                  text: data.original || data.translated,
-                  language: selectedLanguage,
-                  role: 'patient',
-                  timestamp: new Date(),
-                },
-                {
-                  text: data.translated,
-                  language: 'de',
-                  role: 'staff',
-                  timestamp: new Date(),
-                },
-              ]);
+            const now = new Date();
+
+            if (pending.sender === 'patient') {
+              // Patient typed in their language → translation is German for staff panel
+              // Patient panel: already has the original, no new message needed
+              // Staff panel: show the German translation as incoming from patient
+              setStaffMessages((prev) => [...prev, {
+                text: data.translated,
+                sender: 'patient',
+                timestamp: now,
+              }]);
+            } else {
+              // Staff typed in German → translation is patient language
+              // Staff panel: already has the original, no new message needed
+              // Patient panel: show the translated text as incoming from staff
+              setPatientMessages((prev) => [...prev, {
+                text: data.translated,
+                sender: 'staff',
+                timestamp: now,
+              }]);
             }
 
-            // Extract keywords if provided
-            if (data.detectedKeywords && Array.isArray(data.detectedKeywords)) {
+            if (data.detectedKeywords && Array.isArray(data.detectedKeywords) && data.detectedKeywords.length > 0) {
               setDetectedKeywords(data.detectedKeywords);
               setShowPictogramPanel(true);
-
-              // Auto-hide pictogram panel after 5 seconds
-              setTimeout(() => setShowPictogramPanel(false), 5000);
             }
+
+            pendingRef.current = null;
           } catch (error) {
             console.error('Error parsing WebSocket message:', error);
           }
         };
 
-        wsRef.current.onerror = (error) => {
-          console.error('WebSocket error:', error);
-          setConnectionStatus('disconnected');
-        };
-
+        wsRef.current.onerror = () => setConnectionStatus('disconnected');
         wsRef.current.onclose = () => {
-          console.log('WebSocket closed');
           setConnectionStatus('disconnected');
-          // Retry connection after 3 seconds
           setTimeout(connectWebSocket, 3000);
         };
-      } catch (error) {
-        console.error('Failed to connect WebSocket:', error);
+      } catch {
         setConnectionStatus('disconnected');
         setTimeout(connectWebSocket, 3000);
       }
     };
 
     connectWebSocket();
-
-    return () => {
-      if (wsRef.current) {
-        wsRef.current.close();
-      }
-    };
+    return () => { if (wsRef.current) wsRef.current.close(); };
   }, [selectedLanguage]);
 
-  // Fallback: If WebSocket fails, use mock data
-  const handleSendMessageLocal = (text) => {
-    if (!text.trim()) return;
+  const handlePatientSend = (text) => {
+    const now = new Date();
 
-    // Add message to transcript (patient side)
-    setMessages((prev) => [
-      ...prev,
-      {
-        text: text,
-        language: selectedLanguage,
-        role: 'patient',
-        timestamp: new Date(),
-      },
-    ]);
+    // Show immediately on patient panel (their own message)
+    setPatientMessages((prev) => [...prev, { text, sender: 'patient', timestamp: now }]);
 
-    // Extract mock translation
-    const lowerText = text.toLowerCase();
-    let translatedText = null;
-
-    for (const [key, value] of Object.entries(MOCK_TRANSLATIONS)) {
-      if (lowerText.includes(key)) {
-        translatedText = value.de;
-        break;
-      }
-    }
-
-    // If no mock translation found, use a generic response
-    if (!translatedText) {
-      translatedText = 'Ich verstehe. Können Sie mir mehr details geben?'; // Generic German response
-    }
-
-    // Add translated message (staff side)
-    setTimeout(() => {
-      setMessages((prev) => [
-        ...prev,
-        {
-          text: translatedText,
-          language: 'de',
-          role: 'staff',
-          timestamp: new Date(),
-        },
-      ]);
-
-      // Extract keywords from the message
-      const keywords = [];
-      const medicalTerms = ['kopf', 'handgelenk', 'herz', 'knie', 'schmerzen', 'fieber'];
-      medicalTerms.forEach((term) => {
-        if (lowerText.includes(term)) {
-          keywords.push(term);
-        }
-      });
-
-      if (keywords.length > 0) {
-        setDetectedKeywords(keywords);
-        setShowPictogramPanel(true);
-        setTimeout(() => setShowPictogramPanel(false), 5000);
-      }
-    }, 500);
+    // Send to backend: patient language → German
+    pendingRef.current = { sender: 'patient' };
+    sendToBackend(text, selectedLanguage, 'de');
   };
 
-  // Send message via WebSocket if connected, otherwise use local fallback
-  const handleSendMessage = (text) => {
+  const handleStaffSend = (text) => {
+    const now = new Date();
+
+    // Show immediately on staff panel (their own message)
+    setStaffMessages((prev) => [...prev, { text, sender: 'staff', timestamp: now }]);
+
+    // Send to backend: German → patient language
+    pendingRef.current = { sender: 'staff' };
+    sendToBackend(text, 'de', selectedLanguage);
+  };
+
+  const sendToBackend = (text, sourceLang, targetLang) => {
     if (connectionStatus === 'connected' && wsRef.current) {
       try {
-        wsRef.current.send(
-          JSON.stringify({
-            text: text,
-            sourceLang: selectedLanguage,
-            targetLang: 'de',
-          })
-        );
+        wsRef.current.send(JSON.stringify({ text, sourceLang, targetLang }));
       } catch (error) {
-        console.error('Error sending message via WebSocket:', error);
-        handleSendMessageLocal(text);
+        console.error('WebSocket send error:', error);
       }
-    } else {
-      handleSendMessageLocal(text);
     }
   };
 
   return (
     <div className="h-screen w-screen flex flex-col bg-white">
       {/* Header */}
-      <Header patientName="Patient Demo" caseNumber="CASE-001" />
+      <header className="bg-white border-b border-gray-200 shadow-sm">
+        <div className="px-6 py-3 flex justify-between items-center">
+          <div className="flex items-center gap-2">
+            <div className="w-9 h-9 bg-blue-500 rounded-lg flex items-center justify-center">
+              <span className="text-white font-bold text-base">S</span>
+            </div>
+            <h1 className="text-xl font-bold text-gray-900">SwissMedPreter</h1>
+          </div>
 
-      {/* Main Content */}
-      <div className="flex-1 flex overflow-hidden">
-        {/* Transcript Panel */}
-        <div className="flex-1 flex flex-col">
-          <TranscriptPanel messages={messages} />
+          <div className="flex items-center gap-6">
+            <div className="text-right">
+              <p className="text-sm font-semibold text-gray-900">Patient Demo</p>
+              <p className="text-xs text-gray-500">Case: CASE-001</p>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className={`w-2 h-2 rounded-full ${
+                connectionStatus === 'connected' ? 'bg-green-500' :
+                connectionStatus === 'connecting' ? 'bg-yellow-500' : 'bg-red-500'
+              }`} />
+              <span className="text-xs text-gray-500">
+                {connectionStatus === 'connected' ? 'Verbunden mit KIS' :
+                 connectionStatus === 'connecting' ? 'Verbinde mit KIS...' : 'Getrennt'}
+              </span>
+            </div>
+
+            {detectedKeywords.length > 0 && (
+              <button
+                onClick={() => setShowPictogramPanel(!showPictogramPanel)}
+                className="bg-blue-500 text-white px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-blue-600"
+              >
+                {showPictogramPanel ? 'Hide Terms' : `Terms (${detectedKeywords.length})`}
+              </button>
+            )}
+          </div>
         </div>
+      </header>
+
+      {/* Split Chat View */}
+      <div className="flex-1 flex flex-col md:flex-row overflow-hidden relative">
+        {/* Patient side */}
+        <ChatPanel
+          role="patient"
+          messages={patientMessages}
+          onSendMessage={handlePatientSend}
+          icon="/icon-patient.svg"
+          label="Patient"
+          langLabel={LANG_NAMES[selectedLanguage] || selectedLanguage.toUpperCase()}
+          speechLang={selectedLanguage}
+          disabled={connectionStatus !== 'connected'}
+          languageSelector={
+            <LanguageSelector
+              selectedLanguage={selectedLanguage}
+              onLanguageChange={(lang) => { if (lang) setSelectedLanguage(lang); }}
+            />
+          }
+        />
+
+        {/* Staff side */}
+        <ChatPanel
+          role="staff"
+          messages={staffMessages}
+          onSendMessage={handleStaffSend}
+          icon="/icon-staff.svg"
+          label="Staff"
+          langLabel="Deutsch"
+          speechLang="de"
+          disabled={connectionStatus !== 'connected'}
+        />
 
         {/* Pictogram Panel */}
         <PictogramPanel
@@ -199,20 +191,6 @@ export default function ConversationPage() {
           isVisible={showPictogramPanel}
         />
       </div>
-
-      {/* Control Bar */}
-      <ControlBar
-        isRecording={isRecording}
-        onRecordingToggle={() => setIsRecording(!isRecording)}
-        selectedLanguage={selectedLanguage}
-        onLanguageChange={(lang) => {
-          if (lang) setSelectedLanguage(lang);
-        }}
-        isHandsFree={isHandsFree}
-        onHandsFreeToggle={() => setIsHandsFree(!isHandsFree)}
-        connectionStatus={connectionStatus}
-        onSendMessage={handleSendMessage}
-      />
     </div>
   );
 }

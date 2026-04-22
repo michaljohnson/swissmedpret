@@ -10,7 +10,7 @@ export default function Header({ patientName = "Patient", caseNumber = "CASE-001
           </div>
           <h1 className="text-2xl font-bold text-gray-900">SwissMedPreter</h1>
         </div>
-        <div className="text-right">
+        <div className="text-right mr-72">
           <p className="text-sm font-semibold text-gray-900">{patientName}</p>
           <p className="text-xs text-gray-500">Case: {caseNumber}</p>
         </div>
