@@ -1,7 +1,5 @@
 # SwissMedPreter
 
-<img width="817" height="859" alt="SwissMedPreter Logo" src="https://github.com/user-attachments/assets/62c2220b-06e6-4a7f-8ecd-3e8cc6c680dc" />
-
 **AI-gestützte medizinische Übersetzungs-App für Schweizer Spitäler**
 
 SwissMedPreter ermöglicht die Echtzeitkommunikation zwischen medizinischem Fachpersonal und fremdsprachigen Patienten. Die App übersetzt medizinische Gespräche bidirektional und zeigt unterstützende Piktogramme für medizinische Begriffe an.
