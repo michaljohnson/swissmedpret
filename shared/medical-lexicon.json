@@ -1,0 +1,52 @@
+{
+  "metadata": {
+    "name": "SwissMedPreter Offline Medical Image Lexicon",
+    "version": "0.1.0",
+    "mode": "offline-first",
+    "description": "Mock JSON lexicon used by the prototype side panel and fallback search."
+  },
+  "entries": [
+    {
+      "keyword": "wrist",
+      "label": "Wrist / Handgelenk",
+      "category": "symptoms",
+      "imageUrl": "https://example-hospital.local/lexicon/wrist.svg",
+      "svgEmojiFallback": "🦴"
+    },
+    {
+      "keyword": "infection",
+      "label": "Infection / Infektion",
+      "category": "conditions",
+      "imageUrl": "https://example-hospital.local/lexicon/infection.svg",
+      "svgEmojiFallback": "🦠"
+    },
+    {
+      "keyword": "head",
+      "label": "Head / Kopf",
+      "category": "symptoms",
+      "imageUrl": "https://example-hospital.local/lexicon/head.svg",
+      "svgEmojiFallback": "🧠"
+    },
+    {
+      "keyword": "fever",
+      "label": "Fever / Fieber",
+      "category": "symptoms",
+      "imageUrl": "https://example-hospital.local/lexicon/fever.svg",
+      "svgEmojiFallback": "🌡️"
+    },
+    {
+      "keyword": "heart",
+      "label": "Heart / Herz",
+      "category": "organs",
+      "imageUrl": "https://example-hospital.local/lexicon/heart.svg",
+      "svgEmojiFallback": "❤️"
+    },
+    {
+      "keyword": "lung",
+      "label": "Lung / Lunge",
+      "category": "organs",
+      "imageUrl": "https://example-hospital.local/lexicon/lung.svg",
+      "svgEmojiFallback": "🫁"
+    }
+  ]
+}

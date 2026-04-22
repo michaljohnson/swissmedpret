@@ -1,5 +1,12 @@
 server:
   port: 8080
+
 spring:
   application:
-    name: swissmedpreter-conversation-backend
+    name: swissmedpreter-backend
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info

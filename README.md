@@ -1,31 +1,45 @@
 # SwissMedPreter Conversation Prototype
 
-This prototype includes:
-- `frontend/`: React + Tailwind + shadcn-style UI components for a single-page clinical conversation console.
-- `backend/`: Spring Boot REST + WebSocket server that simulates local transcription/translation behavior.
-- `backend/src/main/resources/lexicon.json`: Offline medical lexicon with SVG pictograms.
+Single-page prototype for the SwissMedPreter "Conversation" flow.
 
-## Run the backend
-```bash
-cd backend
-mvn spring-boot:run
-```
+## Stack
+- Frontend: React + Tailwind CSS + lightweight shadcn-style components
+- Backend: Spring Boot + REST + WebSocket (STOMP over SockJS)
+- Data: mock offline lexicon JSON
 
-## Run the frontend
+## Features
+- Real-time bilingual transcript area
+- Translation mode with side-by-side original and translated text
+- Start/Stop session controls
+- Hands-free toggle
+- 20-language selector
+- Keyword-triggered medical pictogram panel
+- Offline lexicon search fallback
+- Simulated on-prem connectivity copy and under-2-second latency
+
+## Run frontend
 ```bash
 cd frontend
 npm install
 npm run dev
 ```
 
-Frontend: `http://localhost:5173`
-Backend: `http://localhost:8080`
+Open in browser: `http://localhost:5173`
 
-## Implemented features
-- Split-view bilingual transcript with simulated sub-2-second latency.
-- Start/stop session controls.
-- 20-language selectors.
-- Hands-free toggle.
-- Automatic medical pictogram panel driven by transcript keyword detection.
-- Manual offline lexicon search.
-- Local-only hospital gateway messaging language in the UI.
+## Run backend
+```bash
+cd backend
+./mvnw spring-boot:run
+```
+
+Or with local Maven:
+```bash
+mvn spring-boot:run
+```
+
+## Notes
+- `/api/simulate` simulates translation/transcription responses.
+- `/ws` is the WebSocket endpoint.
+- `/topic/conversation` broadcasts conversation events.
+- `shared/medical-lexicon.json` contains the mock pictogram mapping.
+- Backend root `/` on port 8080 does not serve the React UI in dev mode.

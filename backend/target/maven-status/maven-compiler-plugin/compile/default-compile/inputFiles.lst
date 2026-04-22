@@ -1,10 +1,7 @@
-C:\Users\pasca\Documents\ZHAW\ZHAW_FS26\ASE2\swissmedpret\backend\src\main\java\com\swissmedpreter\config\WebConfig.java
-C:\Users\pasca\Documents\ZHAW\ZHAW_FS26\ASE2\swissmedpret\backend\src\main\java\com\swissmedpreter\config\WebSocketConfig.java
-C:\Users\pasca\Documents\ZHAW\ZHAW_FS26\ASE2\swissmedpret\backend\src\main\java\com\swissmedpreter\controller\ConversationSocketController.java
-C:\Users\pasca\Documents\ZHAW\ZHAW_FS26\ASE2\swissmedpret\backend\src\main\java\com\swissmedpreter\controller\LexiconController.java
-C:\Users\pasca\Documents\ZHAW\ZHAW_FS26\ASE2\swissmedpret\backend\src\main\java\com\swissmedpreter\model\ConversationMessage.java
-C:\Users\pasca\Documents\ZHAW\ZHAW_FS26\ASE2\swissmedpret\backend\src\main\java\com\swissmedpreter\model\ConversationRequest.java
-C:\Users\pasca\Documents\ZHAW\ZHAW_FS26\ASE2\swissmedpret\backend\src\main\java\com\swissmedpreter\model\LexiconEntry.java
-C:\Users\pasca\Documents\ZHAW\ZHAW_FS26\ASE2\swissmedpret\backend\src\main\java\com\swissmedpreter\service\ConversationSimulationService.java
-C:\Users\pasca\Documents\ZHAW\ZHAW_FS26\ASE2\swissmedpret\backend\src\main\java\com\swissmedpreter\service\LexiconService.java
-C:\Users\pasca\Documents\ZHAW\ZHAW_FS26\ASE2\swissmedpret\backend\src\main\java\com\swissmedpreter\SwissMedPreterApplication.java
+C:\Users\pasca\Downloads\swissmedpreter-prototype(1)\swissmedpreter-prototype\backend\src\main\java\com\swissmedpreter\demo\config\WebConfig.java
+C:\Users\pasca\Downloads\swissmedpreter-prototype(1)\swissmedpreter-prototype\backend\src\main\java\com\swissmedpreter\demo\config\WebSocketConfig.java
+C:\Users\pasca\Downloads\swissmedpreter-prototype(1)\swissmedpreter-prototype\backend\src\main\java\com\swissmedpreter\demo\controller\SimulationController.java
+C:\Users\pasca\Downloads\swissmedpreter-prototype(1)\swissmedpreter-prototype\backend\src\main\java\com\swissmedpreter\demo\model\ConversationMessage.java
+C:\Users\pasca\Downloads\swissmedpreter-prototype(1)\swissmedpreter-prototype\backend\src\main\java\com\swissmedpreter\demo\model\SimulationRequest.java
+C:\Users\pasca\Downloads\swissmedpreter-prototype(1)\swissmedpreter-prototype\backend\src\main\java\com\swissmedpreter\demo\service\SimulationService.java
+C:\Users\pasca\Downloads\swissmedpreter-prototype(1)\swissmedpreter-prototype\backend\src\main\java\com\swissmedpreter\demo\SwissMedPreterApplication.java

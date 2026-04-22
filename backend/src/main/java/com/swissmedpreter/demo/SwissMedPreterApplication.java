@@ -1,4 +1,4 @@
-package com.swissmedpreter;
+package com.swissmedpreter.demo;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
