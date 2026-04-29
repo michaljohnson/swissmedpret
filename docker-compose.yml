@@ -1,0 +1,39 @@
+# =============================================================
+#   SwissMedPreter — full stack
+#
+#   docker compose up --build
+#       → frontend on  http://localhost:8081
+#       → backend on   http://localhost:8080  (proxied at /api, /ws)
+#
+#   The frontend container forwards /api and /ws to the backend
+#   service over the internal Docker network.
+# =============================================================
+
+services:
+  backend:
+    build: ./backend
+    container_name: swissmedpreter-backend
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O-", "http://localhost:8080/api/lexicon"]
+      interval: 10s
+      timeout: 3s
+      retries: 8
+    networks:
+      - smp-net
+
+  frontend:
+    build: ./frontend
+    container_name: swissmedpreter-frontend
+    depends_on:
+      backend:
+        condition: service_healthy
+    ports:
+      - "8081:80"
+    networks:
+      - smp-net
+
+networks:
+  smp-net:
+    driver: bridge

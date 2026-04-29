@@ -1,29 +1,8 @@
-# Backend
-backend/build/
-backend/.gradle/
-backend/bin/
-*.class
-*.jar
-*.war
+# Aggregated ignores — see frontend/.gitignore and backend/.gitignore
+# for module-specific entries.
 
-# Frontend
-frontend/node_modules/
-frontend/dist/
-
-# IDE
+.DS_Store
+*.log
 .idea/
 .vscode/
 *.iml
-.project
-.classpath
-.settings/
-
-# OS
-.DS_Store
-Thumbs.db
-
-# Env
-.env
-.env.local
-*.log
-main.log

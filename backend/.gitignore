@@ -1,0 +1,15 @@
+target/
+.idea/
+*.iml
+.vscode/
+.classpath
+.project
+.settings/
+.factorypath
+*.log
+.DS_Store
+HELP.md
+
+# Maven wrapper jar should NOT be committed when using
+# the script-only wrapper that downloads on first run.
+# !.mvn/wrapper/maven-wrapper.jar

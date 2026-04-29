@@ -1,0 +1,259 @@
+{
+  "version": "1.0.0",
+  "description": "SwissMedPreter Medical Image Lexicon - offline-capable mapping of medical keywords to multilingual translations and pictograms",
+  "lastUpdated": "2025-12-21",
+  "entries": [
+    {
+      "id": "wrist",
+      "category": "anatomy",
+      "keywords": ["wrist", "handgelenk", "polso", "poignet", "muñeca", "معصم", "zapestje"],
+      "translations": {
+        "de": "Handgelenk",
+        "en": "Wrist",
+        "ar": "مِعصَم",
+        "fr": "Poignet",
+        "it": "Polso",
+        "es": "Muñeca",
+        "tr": "Bilek",
+        "pt": "Pulso",
+        "sq": "Kyçi i dorës",
+        "sr": "Зглоб"
+      },
+      "pictogram": "wrist"
+    },
+    {
+      "id": "head",
+      "category": "anatomy",
+      "keywords": ["head", "kopf", "testa", "tête", "cabeza", "رأس", "kafa", "kokë"],
+      "translations": {
+        "de": "Kopf",
+        "en": "Head",
+        "ar": "رأس",
+        "fr": "Tête",
+        "it": "Testa",
+        "es": "Cabeza",
+        "tr": "Kafa",
+        "pt": "Cabeça",
+        "sq": "Kokë",
+        "sr": "Глава"
+      },
+      "pictogram": "head"
+    },
+    {
+      "id": "heart",
+      "category": "anatomy",
+      "keywords": ["heart", "herz", "cuore", "coeur", "corazón", "قلب", "kalp", "zemër"],
+      "translations": {
+        "de": "Herz",
+        "en": "Heart",
+        "ar": "قلب",
+        "fr": "Coeur",
+        "it": "Cuore",
+        "es": "Corazón",
+        "tr": "Kalp",
+        "pt": "Coração",
+        "sq": "Zemër",
+        "sr": "Срце"
+      },
+      "pictogram": "heart"
+    },
+    {
+      "id": "stomach",
+      "category": "anatomy",
+      "keywords": ["stomach", "bauch", "magen", "stomaco", "estomac", "estómago", "بطن", "mide", "stomak"],
+      "translations": {
+        "de": "Bauch",
+        "en": "Stomach",
+        "ar": "بطن",
+        "fr": "Estomac",
+        "it": "Stomaco",
+        "es": "Estómago",
+        "tr": "Mide",
+        "pt": "Estômago",
+        "sq": "Stomak",
+        "sr": "Стомак"
+      },
+      "pictogram": "stomach"
+    },
+    {
+      "id": "lung",
+      "category": "anatomy",
+      "keywords": ["lung", "lunge", "polmone", "poumon", "pulmón", "رئة", "akciğer", "mushkëri"],
+      "translations": {
+        "de": "Lunge",
+        "en": "Lung",
+        "ar": "رئة",
+        "fr": "Poumon",
+        "it": "Polmone",
+        "es": "Pulmón",
+        "tr": "Akciğer",
+        "pt": "Pulmão",
+        "sq": "Mushkëri",
+        "sr": "Плућа"
+      },
+      "pictogram": "lung"
+    },
+    {
+      "id": "bone",
+      "category": "anatomy",
+      "keywords": ["bone", "knochen", "osso", "os", "hueso", "عظم", "kemik", "kockë"],
+      "translations": {
+        "de": "Knochen",
+        "en": "Bone",
+        "ar": "عظم",
+        "fr": "Os",
+        "it": "Osso",
+        "es": "Hueso",
+        "tr": "Kemik",
+        "pt": "Osso",
+        "sq": "Kockë",
+        "sr": "Кост"
+      },
+      "pictogram": "bone"
+    },
+    {
+      "id": "blood",
+      "category": "anatomy",
+      "keywords": ["blood", "blut", "sangue", "sang", "sangre", "دم", "kan", "gjak"],
+      "translations": {
+        "de": "Blut",
+        "en": "Blood",
+        "ar": "دم",
+        "fr": "Sang",
+        "it": "Sangue",
+        "es": "Sangre",
+        "tr": "Kan",
+        "pt": "Sangue",
+        "sq": "Gjak",
+        "sr": "Крв"
+      },
+      "pictogram": "blood"
+    },
+    {
+      "id": "pain",
+      "category": "symptom",
+      "keywords": ["pain", "schmerz", "schmerzen", "weh", "dolore", "douleur", "dolor", "ألم", "ağrı", "dhimbje"],
+      "translations": {
+        "de": "Schmerz",
+        "en": "Pain",
+        "ar": "ألم",
+        "fr": "Douleur",
+        "it": "Dolore",
+        "es": "Dolor",
+        "tr": "Ağrı",
+        "pt": "Dor",
+        "sq": "Dhimbje",
+        "sr": "Бол"
+      },
+      "pictogram": "pain"
+    },
+    {
+      "id": "fever",
+      "category": "symptom",
+      "keywords": ["fever", "fieber", "febbre", "fièvre", "fiebre", "حُمّى", "ateş", "temperaturë"],
+      "translations": {
+        "de": "Fieber",
+        "en": "Fever",
+        "ar": "حُمّى",
+        "fr": "Fièvre",
+        "it": "Febbre",
+        "es": "Fiebre",
+        "tr": "Ateş",
+        "pt": "Febre",
+        "sq": "Temperaturë",
+        "sr": "Грозница"
+      },
+      "pictogram": "fever"
+    },
+    {
+      "id": "infection",
+      "category": "diagnosis",
+      "keywords": ["infection", "infektion", "infezione", "infección", "عدوى", "enfeksiyon", "infeksion"],
+      "translations": {
+        "de": "Infektion",
+        "en": "Infection",
+        "ar": "عدوى",
+        "fr": "Infection",
+        "it": "Infezione",
+        "es": "Infección",
+        "tr": "Enfeksiyon",
+        "pt": "Infecção",
+        "sq": "Infeksion",
+        "sr": "Инфекција"
+      },
+      "pictogram": "infection"
+    },
+    {
+      "id": "medication",
+      "category": "treatment",
+      "keywords": ["medication", "medikament", "medizin", "medicina", "médicament", "medicamento", "دواء", "ilaç", "ilaç", "barna"],
+      "translations": {
+        "de": "Medikament",
+        "en": "Medication",
+        "ar": "دواء",
+        "fr": "Médicament",
+        "it": "Medicina",
+        "es": "Medicamento",
+        "tr": "İlaç",
+        "pt": "Medicação",
+        "sq": "Barna",
+        "sr": "Лек"
+      },
+      "pictogram": "medication"
+    },
+    {
+      "id": "allergy",
+      "category": "diagnosis",
+      "keywords": ["allergy", "allergie", "allergia", "alergia", "حساسية", "alerji", "alergji"],
+      "translations": {
+        "de": "Allergie",
+        "en": "Allergy",
+        "ar": "حساسية",
+        "fr": "Allergie",
+        "it": "Allergia",
+        "es": "Alergia",
+        "tr": "Alerji",
+        "pt": "Alergia",
+        "sq": "Alergji",
+        "sr": "Алергија"
+      },
+      "pictogram": "allergy"
+    },
+    {
+      "id": "fall",
+      "category": "incident",
+      "keywords": ["fall", "fallen", "gestürzt", "stürzen", "caduto", "tombé", "caído", "سقط", "düştü", "rënë"],
+      "translations": {
+        "de": "Sturz",
+        "en": "Fall",
+        "ar": "سقوط",
+        "fr": "Chute",
+        "it": "Caduta",
+        "es": "Caída",
+        "tr": "Düşme",
+        "pt": "Queda",
+        "sq": "Rënia",
+        "sr": "Пад"
+      },
+      "pictogram": "fall"
+    },
+    {
+      "id": "breath",
+      "category": "symptom",
+      "keywords": ["breath", "atmung", "atmen", "respiro", "respiration", "respiración", "تنفس", "nefes", "frymëmarrje"],
+      "translations": {
+        "de": "Atmung",
+        "en": "Breath",
+        "ar": "تنفس",
+        "fr": "Respiration",
+        "it": "Respiro",
+        "es": "Respiración",
+        "tr": "Nefes",
+        "pt": "Respiração",
+        "sq": "Frymëmarrje",
+        "sr": "Дисање"
+      },
+      "pictogram": "breath"
+    }
+  ]
+}
