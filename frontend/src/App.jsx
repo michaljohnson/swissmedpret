@@ -20,12 +20,15 @@ import {
 /* =========================================================================
    SwissMedPreter — Conversation Prototype
    Single-page React frontend.
-   In a real deployment this connects to a Spring Boot backend via:
-     - REST  /api/lexicon, /api/conversation
-     - WSS   /ws/conversation  (real-time transcript + translation stream)
-   For this prototype we simulate the backend in-memory with deterministic
-   delays (<2 s) to demonstrate the latency target.
+   Connects to the Spring Boot backend over:
+     - REST  /api/lexicon                  (offline-cacheable medical lexicon)
+     - REST  /api/conversation/translate   (translation requests)
+   When the backend is unreachable the app degrades gracefully to an
+   in-memory mock so the UI is still demoable in air-gapped scenarios.
    ========================================================================= */
+const CASE_NUMBER = "CASE-2025-1207-A";
+const API_LEXICON = "/api/lexicon";
+const API_TRANSLATE = "/api/conversation/translate";
 
 /* -------------------------------------------------------------------------
    1. Lexicon — mock of /api/lexicon
@@ -245,7 +248,14 @@ const Pictogram = ({ id, className = "w-full h-full" }) => {
         </svg>
       );
     default:
-      return null;
+      // Unknown lexicon entry (e.g., a category we haven't drawn yet):
+      // render a neutral placeholder rather than nothing.
+      return (
+        <svg viewBox="0 0 64 64" className={className} aria-label={id || "term"}>
+          <circle cx="32" cy="32" r="20" {...common} />
+          <path {...common} d="M26 26h12M26 32h12M26 38h8" />
+        </svg>
+      );
   }
 };
 
@@ -541,7 +551,29 @@ export default function App() {
   const [lexiconQuery, setLexiconQuery] = useState("");
   const [emergencyMode, setEmergencyMode] = useState(false);
   const [latencyMs, setLatencyMs] = useState(null);
+  const [lexicon, setLexicon] = useState(LEXICON);
+  const [backendOnline, setBackendOnline] = useState(false);
   const transcriptEndRef = useRef(null);
+
+  // Fetch the lexicon from the backend on mount. If the call succeeds we
+  // also flip backendOnline=true, which switches translation from the
+  // in-memory mock to the real /api/conversation/translate endpoint.
+  useEffect(() => {
+    let cancelled = false;
+    fetch(API_LEXICON)
+      .then((r) => (r.ok ? r.json() : Promise.reject(new Error(`HTTP ${r.status}`))))
+      .then((data) => {
+        if (cancelled) return;
+        if (Array.isArray(data) && data.length > 0) setLexicon(data);
+        setBackendOnline(true);
+      })
+      .catch(() => {
+        // Air-gapped or backend down: keep the embedded lexicon + mock translator.
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   // Auto-scroll transcript
   useEffect(() => {
@@ -565,10 +597,32 @@ export default function App() {
     // eslint-disable-next-line
   }, [handsFree, sessionActive, staffLang]);
 
+  function promotePictogram(entry) {
+    if (!entry) return;
+    setActivePictogram(entry);
+    setPictogramHistory((p) => {
+      const next = [entry, ...p.filter((e) => e.id !== entry.id)];
+      return next.slice(0, 6);
+    });
+  }
+
+  function finishMessage(id, translation, terms, latency) {
+    setLatencyMs(latency);
+    setMessages((prev) =>
+      prev.map((m) =>
+        m.id === id
+          ? { ...m, translation, status: "done", terms: terms.length ? terms : m.terms }
+          : m
+      )
+    );
+    if (terms[0]) promotePictogram(terms[0]);
+    setPendingTranslation(false);
+  }
+
   function pushMessage(speaker, text, sourceLang, targetLang) {
     const id = crypto.randomUUID();
     const now = new Date();
-    const terms = detectKeywords(text, sourceLang);
+    const initialTerms = detectKeywords(text, sourceLang);
     setMessages((prev) => [
       ...prev,
       {
@@ -580,28 +634,45 @@ export default function App() {
         targetLang,
         time: now,
         status: "translating",
-        terms,
+        terms: initialTerms,
       },
     ]);
-    if (terms[0]) {
-      setActivePictogram(terms[0]);
-      setPictogramHistory((p) => {
-        const next = [terms[0], ...p.filter((e) => e.id !== terms[0].id)];
-        return next.slice(0, 6);
-      });
-    }
+    if (initialTerms[0]) promotePictogram(initialTerms[0]);
     setPendingTranslation(true);
     const start = performance.now();
-    const delay = 700 + Math.random() * 700; // 700-1400 ms — under 2 s target
-    setTimeout(() => {
-      const translated = mockTranslate(text, sourceLang, targetLang);
-      const elapsed = Math.round(performance.now() - start);
-      setLatencyMs(elapsed);
-      setMessages((prev) =>
-        prev.map((m) => (m.id === id ? { ...m, translation: translated, status: "done" } : m))
-      );
-      setPendingTranslation(false);
-    }, delay);
+
+    if (backendOnline) {
+      fetch(API_TRANSLATE, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          caseNumber: CASE_NUMBER,
+          speaker: speaker.toUpperCase(),
+          text,
+          sourceLang,
+          targetLang,
+        }),
+      })
+        .then((r) => (r.ok ? r.json() : Promise.reject(new Error(`HTTP ${r.status}`))))
+        .then((data) => {
+          const detected = (data.detectedTerms || [])
+            .map((tid) => lexicon.find((e) => e.id === tid) || LEXICON.find((e) => e.id === tid))
+            .filter(Boolean);
+          const elapsed = data.latencyMs ?? Math.round(performance.now() - start);
+          finishMessage(id, data.translation ?? text, detected, elapsed);
+        })
+        .catch(() => {
+          // Backend hiccup: degrade to local mock so the UX stays alive.
+          const translated = mockTranslate(text, sourceLang, targetLang);
+          finishMessage(id, translated, initialTerms, Math.round(performance.now() - start));
+        });
+    } else {
+      const delay = 700 + Math.random() * 700; // 700-1400 ms — matches backend latency budget
+      setTimeout(() => {
+        const translated = mockTranslate(text, sourceLang, targetLang);
+        finishMessage(id, translated, initialTerms, Math.round(performance.now() - start));
+      }, delay);
+    }
   }
 
   function speakAs(speaker) {
@@ -631,11 +702,14 @@ export default function App() {
   const lexiconResults = useMemo(() => {
     const q = lexiconQuery.trim().toLowerCase();
     if (!q) return [];
-    return LEXICON.filter((e) =>
-      e.keywords.some((k) => k.toLowerCase().includes(q)) ||
-      Object.values(e.translations).some((t) => t.toLowerCase().includes(q))
-    ).slice(0, 8);
-  }, [lexiconQuery]);
+    return lexicon
+      .filter(
+        (e) =>
+          e.keywords.some((k) => k.toLowerCase().includes(q)) ||
+          Object.values(e.translations).some((t) => t.toLowerCase().includes(q))
+      )
+      .slice(0, 8);
+  }, [lexiconQuery, lexicon]);
 
   const staffLangObj = LANGUAGES.find((l) => l.code === staffLang);
   const patientLangObj = LANGUAGES.find((l) => l.code === patientLang);
@@ -668,9 +742,16 @@ export default function App() {
 
           {/* Status pills */}
           <div className="flex items-center gap-2 text-xs">
-            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-slate-100 text-slate-700">
+            <div
+              className={`flex items-center gap-1.5 px-2.5 py-1 rounded-md ${
+                backendOnline
+                  ? "bg-emerald-50 text-emerald-800 border border-emerald-100"
+                  : "bg-slate-100 text-slate-700"
+              }`}
+              title={backendOnline ? "Connected to on-prem backend" : "Backend unreachable — using local mock"}
+            >
               <Wifi className="w-3.5 h-3.5" />
-              <span>Hospital LAN</span>
+              <span>{backendOnline ? "Backend online" : "Local mock"}</span>
             </div>
             {latencyMs !== null && (
               <div
@@ -683,7 +764,7 @@ export default function App() {
               </div>
             )}
             <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-slate-100 text-slate-700">
-              <span className="font-mono">CASE-2025-1207-A</span>
+              <span className="font-mono">{CASE_NUMBER}</span>
             </div>
           </div>
         </div>
@@ -730,7 +811,6 @@ export default function App() {
               title="Healthcare Professional"
               lang={staffLangObj}
               recording={recording}
-              onRecord={() => setRecording((r) => !r)}
               onSpeak={() => speakAs("staff")}
               disabled={!sessionActive}
             />
@@ -740,7 +820,6 @@ export default function App() {
               title="Patient / Care Recipient"
               lang={patientLangObj}
               recording={recording}
-              onRecord={() => setRecording((r) => !r)}
               onSpeak={() => speakAs("patient")}
               disabled={!sessionActive}
             />
@@ -850,7 +929,7 @@ export default function App() {
                 <Search className="w-3.5 h-3.5 text-slate-600" />
                 <span className="text-xs font-medium text-slate-700">Offline lexicon</span>
               </div>
-              <span className="text-[11px] text-slate-400">{LEXICON.length} terms</span>
+              <span className="text-[11px] text-slate-400">{lexicon.length} terms</span>
             </div>
             <div className="p-3">
               <div className="relative">
@@ -863,7 +942,7 @@ export default function App() {
                 />
               </div>
               <div className="mt-2 max-h-[260px] overflow-y-auto -mx-1">
-                {(lexiconQuery ? lexiconResults : LEXICON).map((entry) => (
+                {(lexiconQuery ? lexiconResults : lexicon).map((entry) => (
                   <button
                     key={entry.id}
                     onClick={() => {
