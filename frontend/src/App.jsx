@@ -15,6 +15,11 @@ import {
   Languages,
   AlertCircle,
   Activity,
+  Send,
+  Keyboard,
+  ArrowDown,
+  CornerDownRight,
+  Info,
 } from "lucide-react";
 
 /* =========================================================================
@@ -29,6 +34,16 @@ import {
 const CASE_NUMBER = "CASE-2025-1207-A";
 const API_LEXICON = "/api/lexicon";
 const API_TRANSLATE = "/api/conversation/translate";
+const API_ENGINE = "/api/engine";
+
+// Human labels for the translation engine returned by the backend.
+const ENGINE_LABELS = {
+  libretranslate: { label: "LibreTranslate", tone: "emerald", hint: "Live on-prem translation" },
+  phrasebook: { label: "Phrasebook", tone: "sky", hint: "Bundled medical phrasebook" },
+  lexicon: { label: "Lexicon substitution", tone: "amber", hint: "Word-by-word lexicon fallback" },
+  passthrough: { label: "Passthrough", tone: "slate", hint: "Identical source/target language" },
+  mock: { label: "Local mock", tone: "slate", hint: "Backend unreachable — using browser mock" },
+};
 
 /* -------------------------------------------------------------------------
    1. Lexicon — mock of /api/lexicon
@@ -120,6 +135,66 @@ const LEXICON = [
     translations: { de: "Atmung", en: "Breath", ar: "تنفس", fr: "Respiration", it: "Respiro", es: "Respiración", tr: "Nefes", pt: "Respiração" },
     pictogram: "breath",
   },
+  {
+    id: "back",
+    keywords: ["back", "rücken", "ruecken", "schiena", "dos", "espalda", "ظهر"],
+    translations: { de: "Rücken", en: "Back", ar: "ظهر", fr: "Dos", it: "Schiena", es: "Espalda", tr: "Sırt", pt: "Costas" },
+    pictogram: "back",
+  },
+  {
+    id: "leg",
+    keywords: ["leg", "bein", "gamba", "jambe", "pierna", "ساق"],
+    translations: { de: "Bein", en: "Leg", ar: "ساق", fr: "Jambe", it: "Gamba", es: "Pierna", tr: "Bacak", pt: "Perna" },
+    pictogram: "leg",
+  },
+  {
+    id: "arm",
+    keywords: ["arm", "braccio", "bras", "brazo", "ذراع"],
+    translations: { de: "Arm", en: "Arm", ar: "ذراع", fr: "Bras", it: "Braccio", es: "Brazo", tr: "Kol", pt: "Braço" },
+    pictogram: "arm",
+  },
+  {
+    id: "eye",
+    keywords: ["eye", "auge", "augen", "occhio", "œil", "oeil", "ojo", "عين"],
+    translations: { de: "Auge", en: "Eye", ar: "عين", fr: "Œil", it: "Occhio", es: "Ojo", tr: "Göz", pt: "Olho" },
+    pictogram: "eye",
+  },
+  {
+    id: "ear",
+    keywords: ["ear", "ohr", "ohren", "orecchio", "oreille", "oreja", "أذن"],
+    translations: { de: "Ohr", en: "Ear", ar: "أذن", fr: "Oreille", it: "Orecchio", es: "Oreja", tr: "Kulak", pt: "Ouvido" },
+    pictogram: "ear",
+  },
+  {
+    id: "throat",
+    keywords: ["throat", "hals", "rachen", "gola", "gorge", "garganta", "حلق"],
+    translations: { de: "Hals", en: "Throat", ar: "حلق", fr: "Gorge", it: "Gola", es: "Garganta", tr: "Boğaz", pt: "Garganta" },
+    pictogram: "throat",
+  },
+  {
+    id: "tooth",
+    keywords: ["tooth", "teeth", "zahn", "zähne", "zaehne", "dente", "denti", "dent", "diente", "سن", "ضرس"],
+    translations: { de: "Zahn", en: "Tooth", ar: "سن", fr: "Dent", it: "Dente", es: "Diente", tr: "Diş", pt: "Dente" },
+    pictogram: "tooth",
+  },
+  {
+    id: "cough",
+    keywords: ["cough", "husten", "tosse", "toux", "tos", "سعال"],
+    translations: { de: "Husten", en: "Cough", ar: "سعال", fr: "Toux", it: "Tosse", es: "Tos", tr: "Öksürük", pt: "Tosse" },
+    pictogram: "cough",
+  },
+  {
+    id: "nausea",
+    keywords: ["nausea", "übelkeit", "uebelkeit", "übel", "uebel", "nausée", "náusea", "غثيان"],
+    translations: { de: "Übelkeit", en: "Nausea", ar: "غثيان", fr: "Nausée", it: "Nausea", es: "Náusea", tr: "Bulantı", pt: "Náusea" },
+    pictogram: "nausea",
+  },
+  {
+    id: "dizziness",
+    keywords: ["dizziness", "dizzy", "schwindel", "schwindlig", "vertigine", "vertige", "mareo", "دوار"],
+    translations: { de: "Schwindel", en: "Dizziness", ar: "دوار", fr: "Vertige", it: "Vertigine", es: "Mareo", tr: "Baş dönmesi", pt: "Tontura" },
+    pictogram: "dizziness",
+  },
 ];
 
 /* -------------------------------------------------------------------------
@@ -134,11 +209,18 @@ const Pictogram = ({ id, className = "w-full h-full" }) => {
     case "wrist":
       return (
         <svg viewBox="0 0 64 64" className={className} aria-label="wrist">
-          <path {...common} d="M22 50c0-6 2-10 6-12V18c0-2 2-4 4-4s4 2 4 4v18" />
-          <path {...common} d="M36 28c0-2 2-4 4-4s4 2 4 4v12" />
-          <path {...common} d="M44 32c0-2 2-3 3-3s3 1 3 3v10c0 6-4 12-12 12h-8c-4 0-6-2-8-4" />
-          <path {...common} d="M22 46l-4-4" strokeWidth="2.5" />
-          <path {...common} d="M18 50l-4-4" strokeWidth="2.5" />
+          {/* Forearm */}
+          <path {...common} d="M22 60v-14" />
+          <path {...common} d="M42 60v-14" />
+          {/* Wrist band — highlighted */}
+          <rect x="20" y="38" width="24" height="8" rx="2" fill="currentColor" fillOpacity="0.18" stroke={stroke} strokeWidth={sw} />
+          {/* Palm */}
+          <path {...common} d="M20 38v-6c0-2 2-3 4-3h16c2 0 4 1 4 3v6" />
+          {/* Fingers */}
+          <path {...common} d="M22 29v-14a2 2 0 0 1 4 0v14" />
+          <path {...common} d="M28 29v-17a2 2 0 0 1 4 0v17" />
+          <path {...common} d="M34 29v-17a2 2 0 0 1 4 0v17" />
+          <path {...common} d="M40 29v-12a2 2 0 0 1 4 0v12" />
         </svg>
       );
     case "head":
@@ -154,8 +236,9 @@ const Pictogram = ({ id, className = "w-full h-full" }) => {
     case "heart":
       return (
         <svg viewBox="0 0 64 64" className={className} aria-label="heart">
-          <path {...common} d="M32 50C16 38 12 28 18 22c4-4 10-4 14 2 4-6 10-6 14-2 6 6 2 16-14 28z" />
-          <path {...common} d="M22 30h6l3-4 3 8 3-4h7" />
+          <path {...common} d="M32 52 C12 38 10 24 18 18 c4-3 10-2 14 4 4-6 10-7 14-4 8 6 6 20 -14 34z" fill="currentColor" fillOpacity="0.15" />
+          {/* ECG line */}
+          <path {...common} d="M20 32 h6 l3-5 l3 10 l3-5 h7" strokeWidth="1.5" />
         </svg>
       );
     case "stomach":
@@ -182,25 +265,30 @@ const Pictogram = ({ id, className = "w-full h-full" }) => {
     case "blood":
       return (
         <svg viewBox="0 0 64 64" className={className} aria-label="blood">
-          <path {...common} d="M32 12c0 0 -14 18 -14 28a14 14 0 0 0 28 0c0-10 -14-28 -14-28z" />
-          <path {...common} d="M26 36c0 4 2 6 4 6" />
+          {/* Droplet */}
+          <path {...common} d="M32 8 C32 8 16 28 16 42 a16 16 0 0 0 32 0 C48 28 32 8 32 8z" fill="currentColor" fillOpacity="0.18" />
+          {/* Highlight */}
+          <path {...common} d="M24 38 c0 5 3 8 6 8" strokeWidth="1.2" />
         </svg>
       );
     case "pain":
       return (
         <svg viewBox="0 0 64 64" className={className} aria-label="pain">
-          <path {...common} d="M32 14v6M32 44v6M14 32h6M44 32h6M19 19l4 4M41 41l4 4M19 45l4-4M41 23l4-4" />
-          <circle cx="32" cy="32" r="8" {...common} />
-          <path {...common} d="M28 32l4-4 4 4-4 4z" />
+          {/* Lightning bolt — universally understood pain icon */}
+          <path {...common} d="M34 6 L16 36 L28 36 L24 58 L48 26 L36 26 L40 6 Z" fill="currentColor" fillOpacity="0.15" />
         </svg>
       );
     case "fever":
       return (
         <svg viewBox="0 0 64 64" className={className} aria-label="fever">
-          <rect x="28" y="12" width="8" height="32" rx="4" {...common} />
-          <circle cx="32" cy="48" r="6" {...common} />
-          <path {...common} d="M32 18v22" />
-          <path {...common} d="M44 20l4-2M44 28l4 0M44 36l4 2" />
+          {/* Thermometer body */}
+          <rect x="27" y="8" width="10" height="36" rx="5" {...common} />
+          {/* Bulb */}
+          <circle cx="32" cy="50" r="7" {...common} fill="currentColor" fillOpacity="0.18" />
+          {/* Mercury column */}
+          <path {...common} d="M32 18v28" strokeWidth="3" />
+          {/* Tick marks */}
+          <path {...common} d="M40 16h4M40 24h4M40 32h4" strokeWidth="1" />
         </svg>
       );
     case "infection":
@@ -214,37 +302,159 @@ const Pictogram = ({ id, className = "w-full h-full" }) => {
     case "medication":
       return (
         <svg viewBox="0 0 64 64" className={className} aria-label="medication">
-          <rect x="18" y="22" width="28" height="20" rx="10" {...common} />
-          <path {...common} d="M32 22v20" />
-          <circle cx="25" cy="32" r="1.5" fill={stroke} stroke="none" />
-          <circle cx="39" cy="32" r="1.5" fill={stroke} stroke="none" />
+          {/* Capsule — left half filled */}
+          <rect x="14" y="24" width="36" height="16" rx="8" {...common} />
+          <rect x="14" y="24" width="18" height="16" rx="8" fill="currentColor" fillOpacity="0.18" stroke="none" />
+          <path {...common} d="M32 24v16" />
         </svg>
       );
     case "allergy":
       return (
         <svg viewBox="0 0 64 64" className={className} aria-label="allergy">
-          <circle cx="32" cy="32" r="14" {...common} />
-          <circle cx="26" cy="28" r="2" fill={stroke} stroke="none" />
-          <circle cx="38" cy="28" r="2" fill={stroke} stroke="none" />
-          <circle cx="24" cy="38" r="1.5" fill={stroke} stroke="none" />
-          <circle cx="32" cy="40" r="1.5" fill={stroke} stroke="none" />
-          <circle cx="40" cy="38" r="1.5" fill={stroke} stroke="none" />
+          {/* Face */}
+          <circle cx="32" cy="32" r="18" {...common} />
+          {/* Eyes */}
+          <circle cx="25" cy="28" r="1.5" fill={stroke} stroke="none" />
+          <circle cx="39" cy="28" r="1.5" fill={stroke} stroke="none" />
+          {/* Worried mouth */}
+          <path {...common} d="M26 42 q6 -4 12 0" />
+          {/* Rash spots */}
+          <circle cx="22" cy="36" r="1.8" fill={stroke} stroke="none" />
+          <circle cx="42" cy="36" r="1.8" fill={stroke} stroke="none" />
+          <circle cx="20" cy="28" r="1.4" fill={stroke} stroke="none" />
+          <circle cx="44" cy="28" r="1.4" fill={stroke} stroke="none" />
+          <circle cx="29" cy="44" r="1.4" fill={stroke} stroke="none" />
+          <circle cx="35" cy="44" r="1.4" fill={stroke} stroke="none" />
         </svg>
       );
     case "fall":
       return (
         <svg viewBox="0 0 64 64" className={className} aria-label="fall">
-          <circle cx="20" cy="18" r="4" {...common} />
-          <path {...common} d="M20 22l4 8 8-2 6 6-4 6" />
-          <path {...common} d="M14 50h36" strokeWidth="2" />
-          <path {...common} d="M28 30l-6 16" />
+          {/* Person falling — head, body, limbs in motion */}
+          <circle cx="18" cy="20" r="5" {...common} />
+          {/* Torso */}
+          <path {...common} d="M22 24 L34 30" />
+          {/* Arms */}
+          <path {...common} d="M22 24 L14 32" />
+          <path {...common} d="M28 27 L40 22" />
+          {/* Legs */}
+          <path {...common} d="M34 30 L46 36" />
+          <path {...common} d="M34 30 L42 44" />
+          {/* Ground line */}
+          <path {...common} d="M10 54 H54" strokeWidth="2.5" />
+          {/* Motion lines */}
+          <path {...common} d="M50 14 l-4 4" strokeWidth="1" />
+          <path {...common} d="M54 22 l-4 2" strokeWidth="1" />
         </svg>
       );
     case "breath":
       return (
         <svg viewBox="0 0 64 64" className={className} aria-label="breath">
-          <path {...common} d="M14 26c4 0 6-2 8-4 2-2 6-2 8 0 2 2 4 2 6 0 2-2 6-2 8 0 2 2 4 4 8 4" />
-          <path {...common} d="M14 38c4 0 6-2 8-4 2-2 6-2 8 0 2 2 4 2 6 0 2-2 6-2 8 0 2 2 4 4 8 4" />
+          {/* Trachea */}
+          <path {...common} d="M32 12v20" />
+          {/* Left lung */}
+          <path {...common} d="M30 22h-6a4 4 0 0 0-4 4v14c0 6 4 10 8 10s4-4 4-8V22z" fill="currentColor" fillOpacity="0.12" />
+          {/* Right lung */}
+          <path {...common} d="M34 22h6a4 4 0 0 1 4 4v14c0 6-4 10-8 10s-4-4-4-8V22z" fill="currentColor" fillOpacity="0.12" />
+          {/* In/out arrows */}
+          <path {...common} d="M28 8l4-4 4 4" strokeWidth={sw} />
+        </svg>
+      );
+    case "back":
+      return (
+        <svg viewBox="0 0 64 64" className={className} aria-label="back">
+          {/* Spine / back silhouette */}
+          <path {...common} d="M32 8 a6 6 0 0 1 0 12 a6 6 0 0 1 0 -12 z" />
+          <path {...common} d="M26 22 h12 v8 h-12 z" />
+          <path {...common} d="M32 30 v24" strokeWidth="3" />
+          <path {...common} d="M28 34 h8" />
+          <path {...common} d="M27 40 h10" />
+          <path {...common} d="M28 46 h8" />
+          <path {...common} d="M27 52 h10" />
+        </svg>
+      );
+    case "leg":
+      return (
+        <svg viewBox="0 0 64 64" className={className} aria-label="leg">
+          <path {...common} d="M26 8 h12 v14 q0 8 -4 14 l-4 18" fill="currentColor" fillOpacity="0.12" />
+          <path {...common} d="M30 54 h10 v4 h-12 z" />
+          <path {...common} d="M32 30 q-2 6 -4 12" strokeWidth="1.2" />
+        </svg>
+      );
+    case "arm":
+      return (
+        <svg viewBox="0 0 64 64" className={className} aria-label="arm">
+          {/* Shoulder + upper arm + forearm + hand */}
+          <circle cx="16" cy="14" r="6" {...common} />
+          <path {...common} d="M20 18 L36 26 L48 38" strokeWidth="6" strokeLinecap="round" fill="currentColor" fillOpacity="0.12" />
+          <circle cx="50" cy="40" r="5" {...common} fill="currentColor" fillOpacity="0.15" />
+        </svg>
+      );
+    case "eye":
+      return (
+        <svg viewBox="0 0 64 64" className={className} aria-label="eye">
+          <path {...common} d="M8 32 Q32 12 56 32 Q32 52 8 32 z" fill="currentColor" fillOpacity="0.08" />
+          <circle cx="32" cy="32" r="8" {...common} fill="currentColor" fillOpacity="0.2" />
+          <circle cx="32" cy="32" r="3" fill={stroke} stroke="none" />
+        </svg>
+      );
+    case "ear":
+      return (
+        <svg viewBox="0 0 64 64" className={className} aria-label="ear">
+          <path {...common} d="M40 14 a14 14 0 0 0 -22 8 c-2 8 2 14 4 18 c2 4 0 10 4 12 c4 2 8 -2 8 -6 c0 -4 4 -4 6 -8 c2 -4 4 -8 4 -14 a10 10 0 0 0 -4 -10 z" fill="currentColor" fillOpacity="0.12" />
+          <path {...common} d="M30 26 a4 4 0 0 1 6 4 c0 4 -4 4 -4 8" />
+        </svg>
+      );
+    case "throat":
+      return (
+        <svg viewBox="0 0 64 64" className={className} aria-label="throat">
+          {/* Head profile with throat highlighted */}
+          <path {...common} d="M22 10 a14 14 0 0 1 14 14 v6 l4 4 v6 q0 8 -8 8 h-10 v14" fill="currentColor" fillOpacity="0.08" />
+          {/* Throat highlight */}
+          <ellipse cx="28" cy="36" rx="3" ry="6" {...common} fill="currentColor" fillOpacity="0.3" />
+        </svg>
+      );
+    case "tooth":
+      return (
+        <svg viewBox="0 0 64 64" className={className} aria-label="tooth">
+          <path {...common} d="M20 14 q12 -6 24 0 q4 4 2 12 q-2 8 -4 16 q-2 8 -6 8 q-3 0 -4 -8 q-1 -8 -4 -8 q-3 0 -4 8 q-1 8 -4 8 q-4 0 -6 -8 q-2 -8 -4 -16 q-2 -8 2 -12 z" fill="currentColor" fillOpacity="0.12" />
+        </svg>
+      );
+    case "cough":
+      return (
+        <svg viewBox="0 0 64 64" className={className} aria-label="cough">
+          {/* Head profile */}
+          <circle cx="22" cy="24" r="10" {...common} fill="currentColor" fillOpacity="0.1" />
+          <path {...common} d="M22 34 v8" />
+          {/* Cough puffs */}
+          <circle cx="36" cy="22" r="3" {...common} fill="currentColor" fillOpacity="0.2" />
+          <circle cx="44" cy="20" r="2.5" {...common} fill="currentColor" fillOpacity="0.2" />
+          <circle cx="50" cy="24" r="2" {...common} fill="currentColor" fillOpacity="0.2" />
+          <path {...common} d="M14 22 q-2 -2 -2 -4" strokeWidth="1" />
+        </svg>
+      );
+    case "nausea":
+      return (
+        <svg viewBox="0 0 64 64" className={className} aria-label="nausea">
+          {/* Sick face */}
+          <circle cx="32" cy="30" r="18" {...common} fill="currentColor" fillOpacity="0.08" />
+          {/* Spiral eyes */}
+          <path {...common} d="M22 26 q3 -3 5 0 q-2 2 -3 0" strokeWidth="1.2" />
+          <path {...common} d="M37 26 q3 -3 5 0 q-2 2 -3 0" strokeWidth="1.2" />
+          {/* Wavy mouth */}
+          <path {...common} d="M24 40 q2 -3 4 0 q2 3 4 0 q2 -3 4 0 q2 3 4 0" />
+        </svg>
+      );
+    case "dizziness":
+      return (
+        <svg viewBox="0 0 64 64" className={className} aria-label="dizziness">
+          {/* Head */}
+          <circle cx="32" cy="32" r="14" {...common} fill="currentColor" fillOpacity="0.08" />
+          {/* Spiral around */}
+          <path {...common} d="M32 32 m -10 0 a10 10 0 1 0 20 0 a8 8 0 1 0 -16 0 a6 6 0 1 0 12 0 a4 4 0 1 0 -8 0" strokeWidth="1.2" />
+          {/* Stars */}
+          <path {...common} d="M10 16 l2 2 l-2 2 l-2 -2 z" />
+          <path {...common} d="M52 14 l2 2 l-2 2 l-2 -2 z" />
         </svg>
       );
     default:
@@ -472,24 +682,113 @@ function mockTranslate(text, sourceLang, targetLang) {
   return translated;
 }
 
-// Detect lexicon hits from a piece of text
-function detectKeywords(text, langCode) {
-  const lower = text.toLowerCase();
-  const hits = [];
-  for (const entry of LEXICON) {
-    for (const kw of entry.keywords) {
-      if (lower.includes(kw.toLowerCase())) {
-        hits.push(entry);
-        break;
-      }
-    }
-    // Also check translation in current language
-    const t = entry.translations[langCode];
-    if (t && lower.includes(t.toLowerCase()) && !hits.includes(entry)) {
-      hits.push(entry);
+// Detect lexicon hits from a piece of text.
+// Short keywords (≤4 chars) require a word boundary to avoid false
+// positives like Turkish "kan" (blood) matching inside German "kann".
+// Longer keywords use substring matching so German compounds like
+// "Bauchschmerzen" pull both "bauch" (stomach) and "schmerz" (pain).
+function matchesAny(lower, needles) {
+  for (const raw of needles) {
+    if (!raw) continue;
+    const n = raw.toLowerCase();
+    if (n.length <= 4) {
+      const re = new RegExp(`\\b${n.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`, "u");
+      if (re.test(lower)) return true;
+    } else if (lower.includes(n)) {
+      return true;
     }
   }
+  return false;
+}
+
+function detectKeywords(text, langCode, lexicon = LEXICON) {
+  const lower = (text || "").toLowerCase();
+  const hits = [];
+  for (const entry of lexicon) {
+    let matched = matchesAny(lower, entry.keywords);
+    if (!matched) {
+      const t = entry.translations[langCode];
+      if (t && matchesAny(lower, [t])) matched = true;
+    }
+    if (matched) hits.push(entry);
+  }
   return hits;
+}
+
+// Map our short language codes to BCP-47 tags for the Web Speech API.
+function bcp47(code) {
+  const map = {
+    de: "de-CH", en: "en-US", fr: "fr-FR", it: "it-IT", es: "es-ES",
+    pt: "pt-PT", ar: "ar-SA", tr: "tr-TR", sq: "sq-AL", sr: "sr-RS",
+    ru: "ru-RU", uk: "uk-UA", pl: "pl-PL", hr: "hr-HR", nl: "nl-NL",
+    zh: "zh-CN", fa: "fa-IR", ti: "am-ET", so: "so-SO", ur: "ur-PK",
+  };
+  return map[code] || "en-US";
+}
+
+/**
+ * Browser-native speech recognition (Chromium, Edge, Safari).
+ * Returns { supported, listening, interim, start, stop }.
+ * The hook never throws if SpeechRecognition is absent — the UI degrades to text-only.
+ */
+function useSpeechRecognition({ lang, onFinal }) {
+  const recognitionRef = useRef(null);
+  const [supported, setSupported] = useState(false);
+  const [listening, setListening] = useState(false);
+  const [interim, setInterim] = useState("");
+
+  useEffect(() => {
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SR) return;
+    setSupported(true);
+    const r = new SR();
+    r.continuous = false;
+    r.interimResults = true;
+    r.maxAlternatives = 1;
+    recognitionRef.current = r;
+    return () => {
+      try { r.abort(); } catch { /* noop */ }
+    };
+  }, []);
+
+  useEffect(() => {
+    if (recognitionRef.current) recognitionRef.current.lang = bcp47(lang);
+  }, [lang]);
+
+  const start = () => {
+    const r = recognitionRef.current;
+    if (!r || listening) return;
+    setInterim("");
+    let finalText = "";
+    r.onresult = (e) => {
+      let interimText = "";
+      for (let i = e.resultIndex; i < e.results.length; i++) {
+        const res = e.results[i];
+        if (res.isFinal) finalText += res[0].transcript;
+        else interimText += res[0].transcript;
+      }
+      setInterim(interimText);
+    };
+    r.onerror = () => { setListening(false); setInterim(""); };
+    r.onend = () => {
+      setListening(false);
+      setInterim("");
+      const trimmed = finalText.trim();
+      if (trimmed) onFinal(trimmed);
+    };
+    try {
+      r.start();
+      setListening(true);
+    } catch { /* already started */ }
+  };
+
+  const stop = () => {
+    const r = recognitionRef.current;
+    if (!r) return;
+    try { r.stop(); } catch { /* noop */ }
+  };
+
+  return { supported, listening, interim, start, stop };
 }
 
 /* -------------------------------------------------------------------------
@@ -542,7 +841,6 @@ export default function App() {
   const [staffLang, setStaffLang] = useState("de");
   const [patientLang, setPatientLang] = useState("ar");
   const [sessionActive, setSessionActive] = useState(true);
-  const [recording, setRecording] = useState(false);
   const [handsFree, setHandsFree] = useState(false);
   const [messages, setMessages] = useState([]); // { id, speaker, original, sourceLang, translation, targetLang, time, status, terms }
   const [pendingTranslation, setPendingTranslation] = useState(false);
@@ -553,10 +851,12 @@ export default function App() {
   const [latencyMs, setLatencyMs] = useState(null);
   const [lexicon, setLexicon] = useState(LEXICON);
   const [backendOnline, setBackendOnline] = useState(false);
+  const [engineInfo, setEngineInfo] = useState(null); // { primary, libretranslate: {...}, phrasebook: {...} }
+  const [lastEngine, setLastEngine] = useState(null); // engine id of most recent translation
   const transcriptEndRef = useRef(null);
 
-  // Fetch the lexicon from the backend on mount. If the call succeeds we
-  // also flip backendOnline=true, which switches translation from the
+  // Fetch the lexicon + engine metadata from the backend on mount.
+  // Success flips backendOnline=true, which switches translation from the
   // in-memory mock to the real /api/conversation/translate endpoint.
   useEffect(() => {
     let cancelled = false;
@@ -570,6 +870,16 @@ export default function App() {
       .catch(() => {
         // Air-gapped or backend down: keep the embedded lexicon + mock translator.
       });
+    fetch(API_ENGINE)
+      .then((r) => (r.ok ? r.json() : Promise.reject(new Error(`HTTP ${r.status}`))))
+      .then((data) => {
+        if (cancelled) return;
+        setEngineInfo(data);
+        if (data?.primary) setLastEngine(data.primary);
+      })
+      .catch(() => {
+        // Ignore — older backends or offline mode.
+      });
     return () => {
       cancelled = true;
     };
@@ -580,22 +890,24 @@ export default function App() {
     transcriptEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  // Seed: a starter greeting from staff so the screen isn't empty.
+  // Seed: a starter greeting from staff in their own language so the
+  // initial transcript line matches the configured source language.
   useEffect(() => {
-    pushMessage("staff", "Guten Tag, was kann ich für Sie tun?", staffLang, patientLang);
+    const greeting = staffLang === "de"
+      ? "Guten Tag, was kann ich für Sie tun?"
+      : mockTranslate("Guten Tag, was kann ich für Sie tun?", "de", staffLang);
+    pushMessage("staff", greeting, staffLang, patientLang);
     // eslint-disable-next-line
   }, []);
 
-  // Hands-free auto-trigger: every 6 s alternate a sample patient utterance
+  // Hands-free auto-trigger: every 6 s emit a sample patient utterance
+  // in the patient's currently selected language.
   useEffect(() => {
     if (!handsFree || !sessionActive) return;
-    const t = setInterval(() => {
-      const sample = SAMPLE_PHRASES.patient[Math.floor(Math.random() * SAMPLE_PHRASES.patient.length)];
-      pushMessage("patient", sample.content, "de", staffLang); // patient speaks in their own; demo uses DE
-    }, 6500);
+    const t = setInterval(() => sampleAs("patient"), 6500);
     return () => clearInterval(t);
     // eslint-disable-next-line
-  }, [handsFree, sessionActive, staffLang]);
+  }, [handsFree, sessionActive, staffLang, patientLang]);
 
   function promotePictogram(entry) {
     if (!entry) return;
@@ -606,12 +918,13 @@ export default function App() {
     });
   }
 
-  function finishMessage(id, translation, terms, latency) {
+  function finishMessage(id, translation, terms, latency, engine) {
     setLatencyMs(latency);
+    if (engine) setLastEngine(engine);
     setMessages((prev) =>
       prev.map((m) =>
         m.id === id
-          ? { ...m, translation, status: "done", terms: terms.length ? terms : m.terms }
+          ? { ...m, translation, status: "done", terms: terms.length ? terms : m.terms, engine: engine || m.engine }
           : m
       )
     );
@@ -659,35 +972,51 @@ export default function App() {
             .map((tid) => lexicon.find((e) => e.id === tid) || LEXICON.find((e) => e.id === tid))
             .filter(Boolean);
           const elapsed = data.latencyMs ?? Math.round(performance.now() - start);
-          finishMessage(id, data.translation ?? text, detected, elapsed);
+          finishMessage(id, data.translation ?? text, detected, elapsed, data.engine || "phrasebook");
         })
         .catch(() => {
           // Backend hiccup: degrade to local mock so the UX stays alive.
           const translated = mockTranslate(text, sourceLang, targetLang);
-          finishMessage(id, translated, initialTerms, Math.round(performance.now() - start));
+          finishMessage(id, translated, initialTerms, Math.round(performance.now() - start), "mock");
         });
     } else {
       const delay = 700 + Math.random() * 700; // 700-1400 ms — matches backend latency budget
       setTimeout(() => {
         const translated = mockTranslate(text, sourceLang, targetLang);
-        finishMessage(id, translated, initialTerms, Math.round(performance.now() - start));
+        finishMessage(id, translated, initialTerms, Math.round(performance.now() - start), "mock");
       }, delay);
     }
   }
 
-  function speakAs(speaker) {
+  // Submit a real utterance from voice/text. Source language is the speaker's
+  // own configured language; target is the counterpart's language.
+  function submit(speaker, text) {
+    if (!sessionActive) return;
+    const t = (text || "").trim();
+    if (!t) return;
+    const src = speaker === "staff" ? staffLang : patientLang;
+    const tgt = speaker === "staff" ? patientLang : staffLang;
+    pushMessage(speaker, t, src, tgt);
+  }
+
+  // Demo helper: drop a random sample phrase into the conversation
+  // so the prototype is demoable without typing.
+  // Sample phrases are stored in German, so we mock-translate them into the
+  // currently configured language for the speaker — that way the source
+  // language label always matches what the user picked in the language
+  // selector instead of always saying "de".
+  function sampleAs(speaker) {
     if (!sessionActive) return;
     const pool = speaker === "staff" ? SAMPLE_PHRASES.staff : SAMPLE_PHRASES.patient;
     const phrase = pool[Math.floor(Math.random() * pool.length)];
-    const text = speaker === "staff" ? phrase.de : phrase.content;
-    const src = speaker === "staff" ? staffLang : "de"; // demo: patient speaks in DE for clarity
-    const tgt = speaker === "staff" ? patientLang : staffLang;
-    pushMessage(speaker, text, src, tgt);
+    const germanText = speaker === "staff" ? phrase.de : phrase.content;
+    const speakerLang = speaker === "staff" ? staffLang : patientLang;
+    const localized = speakerLang === "de" ? germanText : mockTranslate(germanText, "de", speakerLang);
+    submit(speaker, localized);
   }
 
   function endSession() {
     setSessionActive(false);
-    setRecording(false);
     setHandsFree(false);
   }
   function newSession() {
@@ -696,7 +1025,10 @@ export default function App() {
     setActivePictogram(null);
     setSessionActive(true);
     setLatencyMs(null);
-    pushMessage("staff", "Guten Tag, was kann ich für Sie tun?", staffLang, patientLang);
+    const greeting = staffLang === "de"
+      ? "Guten Tag, was kann ich für Sie tun?"
+      : mockTranslate("Guten Tag, was kann ich für Sie tun?", "de", staffLang);
+    pushMessage("staff", greeting, staffLang, patientLang);
   }
 
   const lexiconResults = useMemo(() => {
@@ -742,17 +1074,29 @@ export default function App() {
 
           {/* Status pills */}
           <div className="flex items-center gap-2 text-xs">
-            <div
-              className={`flex items-center gap-1.5 px-2.5 py-1 rounded-md ${
-                backendOnline
-                  ? "bg-emerald-50 text-emerald-800 border border-emerald-100"
-                  : "bg-slate-100 text-slate-700"
-              }`}
-              title={backendOnline ? "Connected to on-prem backend" : "Backend unreachable — using local mock"}
-            >
-              <Wifi className="w-3.5 h-3.5" />
-              <span>{backendOnline ? "Backend online" : "Local mock"}</span>
-            </div>
+            {(() => {
+              const engineId = backendOnline ? (lastEngine || engineInfo?.primary || "phrasebook") : "mock";
+              const meta = ENGINE_LABELS[engineId] || ENGINE_LABELS.mock;
+              const toneClasses = {
+                emerald: "bg-emerald-50 text-emerald-800 border-emerald-100",
+                sky: "bg-sky-50 text-sky-800 border-sky-100",
+                amber: "bg-amber-50 text-amber-800 border-amber-100",
+                slate: "bg-slate-100 text-slate-700 border-slate-200",
+              }[meta.tone];
+              const ltSupports = engineInfo?.libretranslate?.supportedLanguages?.length;
+              const tooltip = backendOnline
+                ? `${meta.hint}${engineId === "libretranslate" && ltSupports ? ` · ${ltSupports} Sprachen` : ""}`
+                : "Backend unreachable — using browser mock";
+              return (
+                <div className={`flex items-center gap-1.5 px-2.5 py-1 rounded-md border ${toneClasses}`} title={tooltip}>
+                  <Wifi className="w-3.5 h-3.5" />
+                  <span>{meta.label}</span>
+                  {backendOnline && engineId !== "libretranslate" && engineInfo?.libretranslate?.configured && !engineInfo?.libretranslate?.reachable && (
+                    <span className="text-[10px] opacity-70 ml-1">(LibreTranslate offline)</span>
+                  )}
+                </div>
+              );
+            })()}
             {latencyMs !== null && (
               <div
                 className={`flex items-center gap-1.5 px-2.5 py-1 rounded-md ${
@@ -804,14 +1148,13 @@ export default function App() {
         {/* Conversation column */}
         <section className="space-y-4">
           {/* Speaker buttons */}
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             <SpeakerCard
               role="staff"
               icon={<Stethoscope className="w-4 h-4" />}
               title="Healthcare Professional"
               lang={staffLangObj}
-              recording={recording}
-              onSpeak={() => speakAs("staff")}
+              onSubmit={(text) => submit("staff", text)}
               disabled={!sessionActive}
             />
             <SpeakerCard
@@ -819,10 +1162,20 @@ export default function App() {
               icon={<User className="w-4 h-4" />}
               title="Patient / Care Recipient"
               lang={patientLangObj}
-              recording={recording}
-              onSpeak={() => speakAs("patient")}
+              onSubmit={(text) => submit("patient", text)}
               disabled={!sessionActive}
             />
+          </div>
+
+          {/* Demo helpers: drop a random sample utterance into the transcript */}
+          <div className="flex items-center gap-2 text-xs text-slate-500">
+            <span>Demo:</span>
+            <Btn variant="ghost" size="sm" onClick={() => sampleAs("staff")} disabled={!sessionActive}>
+              <Stethoscope className="w-3.5 h-3.5" /> Staff phrase
+            </Btn>
+            <Btn variant="ghost" size="sm" onClick={() => sampleAs("patient")} disabled={!sessionActive}>
+              <User className="w-3.5 h-3.5" /> Patient phrase
+            </Btn>
           </div>
 
           {/* Transcript */}
@@ -872,26 +1225,29 @@ export default function App() {
             <div className="p-5">
               {activePictogram ? (
                 <div className="text-center">
-                  <div className="w-32 h-32 mx-auto rounded-xl bg-gradient-to-br from-sky-50 to-white border border-sky-100 flex items-center justify-center text-sky-800 p-5">
-                    <Pictogram id={activePictogram.pictogram} />
+                  <div className="w-52 h-52 mx-auto rounded-2xl bg-gradient-to-br from-sky-50 via-white to-sky-50 border border-sky-100 shadow-inner flex items-center justify-center text-sky-800 p-7">
+                    <Pictogram id={activePictogram.pictogram} className="w-full h-full" />
                   </div>
-                  <div className="mt-4 space-y-1">
-                    <div className="text-base font-semibold text-slate-900">
+                  <div className="mt-4 space-y-1.5">
+                    <div className="text-lg font-semibold text-slate-900">
                       {activePictogram.translations[staffLang] || activePictogram.translations.en}
                     </div>
                     <div
-                      className="text-base text-slate-700"
+                      className="text-lg text-slate-700"
                       dir={LANGUAGES.find((l) => l.code === patientLang)?.rtl ? "rtl" : "ltr"}
                     >
                       {activePictogram.translations[patientLang] || activePictogram.translations.en}
                     </div>
                     <div className="text-[11px] text-slate-400 uppercase tracking-wide pt-2">
-                      Term ID · {activePictogram.id}
+                      Term · {activePictogram.id} · {activePictogram.category || "general"}
                     </div>
                   </div>
                 </div>
               ) : (
-                <div className="text-center text-slate-400 text-xs py-8">
+                <div className="text-center text-slate-400 text-xs py-12">
+                  <div className="w-20 h-20 mx-auto mb-3 rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center text-slate-300">
+                    <Languages className="w-8 h-8" />
+                  </div>
                   No keyword detected yet. Pictograms appear automatically when medical terms are spoken.
                 </div>
               )}
@@ -956,7 +1312,7 @@ export default function App() {
                       activePictogram?.id === entry.id ? "bg-sky-50" : "hover:bg-slate-50"
                     }`}
                   >
-                    <span className="w-8 h-8 flex-shrink-0 rounded-md bg-slate-100 text-slate-700 flex items-center justify-center p-1.5">
+                    <span className="w-10 h-10 flex-shrink-0 rounded-md bg-gradient-to-br from-sky-50 to-white border border-slate-100 text-sky-800 flex items-center justify-center p-1.5">
                       <Pictogram id={entry.pictogram} />
                     </span>
                     <span className="flex-1 min-w-0">
@@ -1014,13 +1370,41 @@ function LangPicker({ label, value, onChange, accent = "sky" }) {
   );
 }
 
-function SpeakerCard({ role, icon, title, lang, recording, onSpeak, disabled }) {
+function SpeakerCard({ role, icon, title, lang, onSubmit, disabled }) {
+  const [text, setText] = useState("");
+  const { supported, listening, interim, start, stop } = useSpeechRecognition({
+    lang: lang?.code,
+    onFinal: (transcript) => {
+      // Final transcript: immediately submit so the conversation flows naturally.
+      onSubmit(transcript);
+    },
+  });
+
   const accent =
     role === "staff"
       ? "from-sky-50 to-white border-sky-100"
       : "from-violet-50 to-white border-violet-100";
   const accentText = role === "staff" ? "text-sky-800" : "text-violet-800";
   const accentBg = role === "staff" ? "bg-sky-600 hover:bg-sky-700" : "bg-violet-600 hover:bg-violet-700";
+  const accentRing = role === "staff" ? "focus-within:ring-sky-200 focus-within:border-sky-300" : "focus-within:ring-violet-200 focus-within:border-violet-300";
+
+  function submitText() {
+    const t = text.trim();
+    if (!t) return;
+    onSubmit(t);
+    setText("");
+  }
+
+  function onMicClick() {
+    if (!supported) return;
+    if (listening) stop();
+    else start();
+  }
+
+  const placeholder = role === "staff"
+    ? "Frage oder Anweisung tippen…"
+    : "Beschwerden eingeben…";
+
   return (
     <div className={`bg-gradient-to-br ${accent} border rounded-xl p-3.5 flex flex-col gap-2.5`}>
       <div className="flex items-center gap-2">
@@ -1031,17 +1415,50 @@ function SpeakerCard({ role, icon, title, lang, recording, onSpeak, disabled }) 
           <div className={`text-xs font-semibold ${accentText}`}>{title}</div>
           <div className="text-[11px] text-slate-500 truncate">
             speaks <span className="font-medium text-slate-700">{lang?.flag} {lang?.name}</span>
+            <span className="ml-2 text-slate-400">· {bcp47(lang?.code)}</span>
           </div>
         </div>
       </div>
+
+      {/* Text input + send */}
+      <div className={`flex items-stretch gap-1.5 bg-white border border-slate-200 rounded-md p-1 transition focus-within:ring-2 ${accentRing}`}>
+        <input
+          value={listening ? interim : text}
+          onChange={(e) => setText(e.target.value)}
+          onKeyDown={(e) => { if (e.key === "Enter") submitText(); }}
+          placeholder={listening ? "Höre zu…" : placeholder}
+          disabled={disabled || listening}
+          dir={lang?.rtl ? "rtl" : "ltr"}
+          className="flex-1 px-2 py-1.5 text-sm bg-transparent focus:outline-none placeholder:text-slate-400 disabled:opacity-60"
+        />
+        <button
+          disabled={disabled || !text.trim() || listening}
+          onClick={submitText}
+          title="Send (Enter)"
+          className={`text-white rounded px-2.5 flex items-center justify-center transition ${accentBg} disabled:opacity-40 disabled:cursor-not-allowed`}
+        >
+          <Send className="w-4 h-4" />
+        </button>
+      </div>
+
+      {/* Mic button */}
       <button
-        disabled={disabled}
-        onClick={onSpeak}
-        className={`text-white text-sm font-medium rounded-md py-2 flex items-center justify-center gap-2 transition ${accentBg} disabled:opacity-40 disabled:cursor-not-allowed`}
+        disabled={disabled || !supported}
+        onClick={onMicClick}
+        title={supported ? (listening ? "Tap to stop listening" : "Tap to speak") : "Speech recognition not supported in this browser"}
+        className={`text-white text-sm font-medium rounded-md py-2 flex items-center justify-center gap-2 transition ${
+          listening ? "bg-rose-600 hover:bg-rose-700 animate-pulse" : accentBg
+        } disabled:opacity-40 disabled:cursor-not-allowed`}
       >
-        <Mic className="w-4 h-4" />
-        {recording ? "Listening…" : "Tap to speak"}
+        {listening ? <><Square className="w-4 h-4" /> Stop listening</> : <><Mic className="w-4 h-4" /> Tap to speak</>}
       </button>
+
+      {!supported && (
+        <div className="text-[10px] text-slate-500 leading-snug flex items-start gap-1 -mt-1">
+          <Keyboard className="w-3 h-3 mt-0.5 flex-shrink-0" />
+          Speech recognition unavailable in this browser. Use the text input — Chrome / Edge support voice.
+        </div>
+      )}
     </div>
   );
 }
@@ -1050,10 +1467,25 @@ function MessageBubble({ m, onPictogram }) {
   const isStaff = m.speaker === "staff";
   const sourceLangObj = LANGUAGES.find((l) => l.code === m.sourceLang);
   const targetLangObj = LANGUAGES.find((l) => l.code === m.targetLang);
+  const isUntranslated =
+    m.status === "done" &&
+    m.sourceLang !== m.targetLang &&
+    typeof m.translation === "string" &&
+    m.translation.trim().toLowerCase() === (m.original || "").trim().toLowerCase();
+  const translationTint = isStaff
+    ? "border-violet-300 bg-violet-50"
+    : "border-sky-300 bg-sky-50";
+  const translationHeader = isStaff
+    ? "bg-violet-100 text-violet-900 border-violet-200"
+    : "bg-sky-100 text-sky-900 border-sky-200";
+  const translationBadge = isStaff
+    ? "bg-violet-600 text-white"
+    : "bg-sky-600 text-white";
   return (
     <div className={`flex ${isStaff ? "justify-start" : "justify-end"}`}>
-      <div className={`max-w-[88%] ${isStaff ? "" : "text-right"}`}>
-        <div className="flex items-center gap-2 mb-1 text-[11px] text-slate-500">
+      <div className={`max-w-[88%] w-full ${isStaff ? "" : "ml-auto"}`}>
+        {/* Speaker header */}
+        <div className={`flex items-center gap-2 mb-1 text-[11px] text-slate-500 ${isStaff ? "" : "justify-end"}`}>
           {isStaff ? (
             <>
               <Stethoscope className="w-3 h-3 text-sky-700" /> <span className="font-medium text-sky-800">Staff</span>
@@ -1068,7 +1500,7 @@ function MessageBubble({ m, onPictogram }) {
           {m.terms.length > 0 && (
             <>
               <span className="text-slate-300">·</span>
-              <span className="inline-flex items-center gap-1">
+              <span className="inline-flex items-center gap-1 flex-wrap">
                 {m.terms.map((t) => (
                   <button
                     key={t.id}
@@ -1085,42 +1517,76 @@ function MessageBubble({ m, onPictogram }) {
             </>
           )}
         </div>
-        <div
-          className={`rounded-xl px-4 py-2.5 ${
-            isStaff
-              ? "bg-white border border-slate-200 text-slate-900"
-              : "bg-violet-600 text-white border border-violet-600"
-          }`}
-        >
-          <div className="text-[10px] uppercase tracking-wider opacity-60 mb-1">
-            {sourceLangObj?.flag} {sourceLangObj?.name}
+
+        {/* Original card */}
+        <div className="rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm">
+          <div className="px-3 py-1.5 bg-slate-50 border-b border-slate-100 flex items-center justify-between text-[10px]">
+            <div className="flex items-center gap-2">
+              <span className="px-1.5 py-0.5 rounded bg-slate-700 text-white font-semibold uppercase tracking-wider">
+                Original
+              </span>
+              <span className="text-slate-600 font-medium">{sourceLangObj?.flag} {sourceLangObj?.name}</span>
+            </div>
+            <span className="text-slate-400 uppercase tracking-wider">Eingabe</span>
           </div>
           <div
-            className="text-sm leading-relaxed"
+            className="px-4 py-2.5 text-sm leading-relaxed text-slate-900"
             dir={sourceLangObj?.rtl ? "rtl" : "ltr"}
           >
             {highlightTerms(m.original, m.terms, m.sourceLang)}
           </div>
         </div>
-        <div
-          className={`mt-1.5 rounded-xl px-4 py-2.5 border-2 border-dashed ${
-            isStaff ? "border-violet-200 bg-violet-50/50 text-violet-900" : "border-sky-200 bg-sky-50/50 text-sky-900"
-          }`}
-        >
-          <div className="text-[10px] uppercase tracking-wider opacity-60 mb-1 flex items-center gap-1">
-            {targetLangObj?.flag} {targetLangObj?.name} · translation
+
+        {/* Arrow connector */}
+        <div className="flex items-center justify-center py-1 text-slate-400">
+          <ArrowDown className="w-4 h-4" />
+        </div>
+
+        {/* Translation card */}
+        <div className={`rounded-xl overflow-hidden border-2 shadow-sm ${translationTint}`}>
+          <div className={`px-3 py-1.5 border-b flex items-center justify-between text-[10px] ${translationHeader}`}>
+            <div className="flex items-center gap-2">
+              <span className={`px-1.5 py-0.5 rounded font-semibold uppercase tracking-wider ${translationBadge}`}>
+                Übersetzung
+              </span>
+              <span className="font-medium">{targetLangObj?.flag} {targetLangObj?.name}</span>
+            </div>
+            <span className="uppercase tracking-wider opacity-70 flex items-center gap-1">
+              <CornerDownRight className="w-3 h-3" /> Output
+              {m.engine && ENGINE_LABELS[m.engine] && (
+                <span className="ml-1 px-1.5 py-0.5 rounded bg-white/40 normal-case tracking-normal font-medium opacity-90" title={ENGINE_LABELS[m.engine].hint}>
+                  via {ENGINE_LABELS[m.engine].label}
+                </span>
+              )}
+            </span>
           </div>
-          {m.status === "translating" ? (
-            <div className="flex items-center gap-1.5 py-0.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-current animate-pulse" />
-              <span className="w-1.5 h-1.5 rounded-full bg-current animate-pulse" style={{ animationDelay: "150ms" }} />
-              <span className="w-1.5 h-1.5 rounded-full bg-current animate-pulse" style={{ animationDelay: "300ms" }} />
-            </div>
-          ) : (
-            <div className="text-sm leading-relaxed" dir={targetLangObj?.rtl ? "rtl" : "ltr"}>
-              {m.translation}
-            </div>
-          )}
+          <div className="px-4 py-2.5">
+            {m.status === "translating" ? (
+              <div className="flex items-center gap-1.5 py-0.5 text-slate-500">
+                <span className="w-1.5 h-1.5 rounded-full bg-current animate-pulse" />
+                <span className="w-1.5 h-1.5 rounded-full bg-current animate-pulse" style={{ animationDelay: "150ms" }} />
+                <span className="w-1.5 h-1.5 rounded-full bg-current animate-pulse" style={{ animationDelay: "300ms" }} />
+                <span className="ml-1.5 text-[11px] italic">Übersetzung läuft…</span>
+              </div>
+            ) : isUntranslated ? (
+              <div className="flex items-start gap-2 text-amber-800 bg-amber-50 -mx-4 -my-2.5 px-4 py-2.5 border-l-4 border-amber-300">
+                <Info className="w-3.5 h-3.5 mt-0.5 flex-shrink-0" />
+                <div className="text-xs leading-snug">
+                  <div className="font-medium">Keine Übersetzung im Demo-Phrasenbuch.</div>
+                  <div className="opacity-80">
+                    Im Prototyp werden nur bekannte medizinische Sätze und Fachbegriffe übersetzt. Originaltext:
+                  </div>
+                  <div className="mt-1 text-slate-700 italic" dir={targetLangObj?.rtl ? "rtl" : "ltr"}>
+                    {m.translation}
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="text-sm leading-relaxed text-slate-900" dir={targetLangObj?.rtl ? "rtl" : "ltr"}>
+                {m.translation}
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>

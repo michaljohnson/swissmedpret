@@ -2,8 +2,11 @@ C:\Users\pasca\Documents\ZHAW\ZHAW_FS26\ASE2\swissmedpret\backend\src\main\java\
 C:\Users\pasca\Documents\ZHAW\ZHAW_FS26\ASE2\swissmedpret\backend\src\main\java\com\swissmedpreter\config\WebSocketConfig.java
 C:\Users\pasca\Documents\ZHAW\ZHAW_FS26\ASE2\swissmedpret\backend\src\main\java\com\swissmedpreter\controller\ConversationController.java
 C:\Users\pasca\Documents\ZHAW\ZHAW_FS26\ASE2\swissmedpret\backend\src\main\java\com\swissmedpreter\controller\ConversationSocketHandler.java
+C:\Users\pasca\Documents\ZHAW\ZHAW_FS26\ASE2\swissmedpret\backend\src\main\java\com\swissmedpreter\controller\EngineController.java
 C:\Users\pasca\Documents\ZHAW\ZHAW_FS26\ASE2\swissmedpret\backend\src\main\java\com\swissmedpreter\controller\LexiconController.java
 C:\Users\pasca\Documents\ZHAW\ZHAW_FS26\ASE2\swissmedpret\backend\src\main\java\com\swissmedpreter\model\Domain.java
 C:\Users\pasca\Documents\ZHAW\ZHAW_FS26\ASE2\swissmedpret\backend\src\main\java\com\swissmedpreter\service\LexiconService.java
+C:\Users\pasca\Documents\ZHAW\ZHAW_FS26\ASE2\swissmedpret\backend\src\main\java\com\swissmedpreter\service\LibreTranslateClient.java
+C:\Users\pasca\Documents\ZHAW\ZHAW_FS26\ASE2\swissmedpret\backend\src\main\java\com\swissmedpreter\service\PhrasebookService.java
 C:\Users\pasca\Documents\ZHAW\ZHAW_FS26\ASE2\swissmedpret\backend\src\main\java\com\swissmedpreter\service\TranslationService.java
 C:\Users\pasca\Documents\ZHAW\ZHAW_FS26\ASE2\swissmedpret\backend\src\main\java\com\swissmedpreter\SwissMedPreterApplication.java

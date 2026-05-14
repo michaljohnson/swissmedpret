@@ -102,6 +102,7 @@ public class ConversationSocketHandler extends TextWebSocketHandler {
                 out.put("messageId", messageId.toString());
                 out.put("translation", result.translation());
                 out.put("latencyMs", result.latencyMs());
+                out.put("engine", result.engine());
                 out.put("issuedAt", Instant.now().toString());
                 var arr = out.putArray("detectedTerms");
                 result.detectedTerms().forEach(arr::add);

@@ -2,17 +2,67 @@
 #   SwissMedPreter — full stack
 #
 #   docker compose up --build
-#       → frontend on  http://localhost:8081
-#       → backend on   http://localhost:8080  (proxied at /api, /ws)
+#       → frontend on        http://localhost:8081
+#       → backend on         http://localhost:8080  (proxied at /api, /ws)
+#       → libretranslate on  http://localhost:5050  (internal: libretranslate:5000)
 #
-#   The frontend container forwards /api and /ws to the backend
-#   service over the internal Docker network.
+#   The frontend container forwards /api and /ws to the backend service
+#   over the internal Docker network. The backend calls LibreTranslate
+#   directly inside the same network — no data leaves the perimeter.
+#
+#   First start: LibreTranslate downloads its language packs (~1–2 GB).
+#   Subsequent starts are fast because the volume `lt-models` keeps them.
 # =============================================================
 
 services:
+  libretranslate:
+    image: libretranslate/libretranslate:latest
+    container_name: swissmedpreter-libretranslate
+    restart: unless-stopped
+    environment:
+      # Restrict loaded packs so the image stays small and startup is fast.
+      # NOTE: only language codes that exist in the Argos catalogue are valid here.
+      # Serbian (sr) and Tigrinya (ti) for example are NOT available — the rest
+      # of our UI languages (sr, so, ti, ur, fa, hr) fall back to the phrasebook
+      # automatically because LibreTranslateClient checks /languages first.
+      LT_LOAD_ONLY: "de,en,fr,it,es,pt,ar,tr,ru,nl,pl,uk,zh,sq"
+      LT_DISABLE_WEB_UI: "true"
+      LT_THREADS: "4"
+      LT_UPDATE_MODELS: "false"
+    volumes:
+      # Mount one level up at /home/libretranslate/.local so Docker inherits
+      # the libretranslate user's ownership from the image. Mounting deeper
+      # at .../argos-translate/packages creates a root-owned dir and the
+      # process crashes with PermissionError on first start.
+      - lt-models:/home/libretranslate/.local
+    ports:
+      - "5050:5000"
+    healthcheck:
+      # On the first start LibreTranslate downloads its language packs. That
+      # can take 5–20 minutes depending on bandwidth, so we give it lots of
+      # grace via start_period + retries. The backend does NOT block on this
+      # healthcheck — it boots immediately and falls back to the phrasebook
+      # until LibreTranslate is ready (LibreTranslateClient re-probes lazily).
+      test: ["CMD-SHELL", "wget -q -O- http://localhost:5000/languages | grep -q '\"code\"' || exit 1"]
+      interval: 20s
+      timeout: 10s
+      retries: 60
+      start_period: 600s
+    networks:
+      - smp-net
+
   backend:
     build: ./backend
     container_name: swissmedpreter-backend
+    environment:
+      SWISSMEDPRETER_LIBRETRANSLATE_URL: "http://libretranslate:5000"
+    depends_on:
+      # Just start LibreTranslate first; do NOT gate on its healthcheck.
+      # The backend has a graceful fallback to phrasebook + lexicon until
+      # LibreTranslate finishes downloading its language packs (which can
+      # take several minutes on first boot).
+      libretranslate:
+        condition: service_started
     ports:
       - "8080:8080"
     healthcheck:
@@ -33,6 +83,9 @@ services:
       - "8081:80"
     networks:
       - smp-net
+
+volumes:
+  lt-models:
 
 networks:
   smp-net:

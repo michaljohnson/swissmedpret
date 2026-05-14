@@ -45,7 +45,8 @@ public class Domain {
         UUID messageId,
         String translation,
         List<String> detectedTerms,
-        long latencyMs
+        long latencyMs,
+        String engine
     ) {}
 
     /** A medical-lexicon entry. */

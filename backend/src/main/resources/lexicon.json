@@ -254,6 +254,106 @@
         "sr": "Дисање"
       },
       "pictogram": "breath"
+    },
+    {
+      "id": "back",
+      "category": "anatomy",
+      "keywords": ["back", "rücken", "ruecken", "schiena", "dos", "espalda", "ظهر", "sırt", "shpinë"],
+      "translations": {
+        "de": "Rücken", "en": "Back", "ar": "ظهر", "fr": "Dos", "it": "Schiena",
+        "es": "Espalda", "tr": "Sırt", "pt": "Costas", "sq": "Shpinë", "sr": "Леђа"
+      },
+      "pictogram": "back"
+    },
+    {
+      "id": "leg",
+      "category": "anatomy",
+      "keywords": ["leg", "bein", "gamba", "jambe", "pierna", "ساق", "bacak", "këmbë"],
+      "translations": {
+        "de": "Bein", "en": "Leg", "ar": "ساق", "fr": "Jambe", "it": "Gamba",
+        "es": "Pierna", "tr": "Bacak", "pt": "Perna", "sq": "Këmbë", "sr": "Нога"
+      },
+      "pictogram": "leg"
+    },
+    {
+      "id": "arm",
+      "category": "anatomy",
+      "keywords": ["arm", "braccio", "bras", "brazo", "ذراع", "kol", "krah"],
+      "translations": {
+        "de": "Arm", "en": "Arm", "ar": "ذراع", "fr": "Bras", "it": "Braccio",
+        "es": "Brazo", "tr": "Kol", "pt": "Braço", "sq": "Krah", "sr": "Рука"
+      },
+      "pictogram": "arm"
+    },
+    {
+      "id": "eye",
+      "category": "anatomy",
+      "keywords": ["eye", "auge", "augen", "occhio", "œil", "oeil", "ojo", "عين", "göz", "sy"],
+      "translations": {
+        "de": "Auge", "en": "Eye", "ar": "عين", "fr": "Œil", "it": "Occhio",
+        "es": "Ojo", "tr": "Göz", "pt": "Olho", "sq": "Sy", "sr": "Око"
+      },
+      "pictogram": "eye"
+    },
+    {
+      "id": "ear",
+      "category": "anatomy",
+      "keywords": ["ear", "ohr", "ohren", "orecchio", "oreille", "oreja", "أذن", "kulak", "vesh"],
+      "translations": {
+        "de": "Ohr", "en": "Ear", "ar": "أذن", "fr": "Oreille", "it": "Orecchio",
+        "es": "Oreja", "tr": "Kulak", "pt": "Ouvido", "sq": "Vesh", "sr": "Уво"
+      },
+      "pictogram": "ear"
+    },
+    {
+      "id": "throat",
+      "category": "anatomy",
+      "keywords": ["throat", "hals", "rachen", "gola", "gorge", "garganta", "حلق", "boğaz", "fyt"],
+      "translations": {
+        "de": "Hals", "en": "Throat", "ar": "حلق", "fr": "Gorge", "it": "Gola",
+        "es": "Garganta", "tr": "Boğaz", "pt": "Garganta", "sq": "Fyt", "sr": "Грло"
+      },
+      "pictogram": "throat"
+    },
+    {
+      "id": "tooth",
+      "category": "anatomy",
+      "keywords": ["tooth", "teeth", "zahn", "zähne", "zaehne", "dente", "denti", "dent", "diente", "سن", "ضرس", "diş", "dhëmb"],
+      "translations": {
+        "de": "Zahn", "en": "Tooth", "ar": "سن", "fr": "Dent", "it": "Dente",
+        "es": "Diente", "tr": "Diş", "pt": "Dente", "sq": "Dhëmb", "sr": "Зуб"
+      },
+      "pictogram": "tooth"
+    },
+    {
+      "id": "cough",
+      "category": "symptom",
+      "keywords": ["cough", "husten", "tosse", "toux", "tos", "سعال", "öksürük", "kollë"],
+      "translations": {
+        "de": "Husten", "en": "Cough", "ar": "سعال", "fr": "Toux", "it": "Tosse",
+        "es": "Tos", "tr": "Öksürük", "pt": "Tosse", "sq": "Kollë", "sr": "Кашаљ"
+      },
+      "pictogram": "cough"
+    },
+    {
+      "id": "nausea",
+      "category": "symptom",
+      "keywords": ["nausea", "übelkeit", "uebelkeit", "übel", "uebel", "nausée", "náusea", "غثيان", "bulantı", "vjellje"],
+      "translations": {
+        "de": "Übelkeit", "en": "Nausea", "ar": "غثيان", "fr": "Nausée", "it": "Nausea",
+        "es": "Náusea", "tr": "Bulantı", "pt": "Náusea", "sq": "Vjellje", "sr": "Мука"
+      },
+      "pictogram": "nausea"
+    },
+    {
+      "id": "dizziness",
+      "category": "symptom",
+      "keywords": ["dizziness", "dizzy", "schwindel", "schwindlig", "vertigine", "vertige", "mareo", "دوار", "baş dönmesi", "marramendje"],
+      "translations": {
+        "de": "Schwindel", "en": "Dizziness", "ar": "دوار", "fr": "Vertige", "it": "Vertigine",
+        "es": "Mareo", "tr": "Baş dönmesi", "pt": "Tontura", "sq": "Marramendje", "sr": "Вртоглавица"
+      },
+      "pictogram": "dizziness"
     }
   ]
 }

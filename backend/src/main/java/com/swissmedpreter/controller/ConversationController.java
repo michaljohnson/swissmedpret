@@ -32,7 +32,8 @@ public class ConversationController {
             UUID.randomUUID(),
             result.translation(),
             result.detectedTerms(),
-            result.latencyMs()
+            result.latencyMs(),
+            result.engine()
         );
     }
 }

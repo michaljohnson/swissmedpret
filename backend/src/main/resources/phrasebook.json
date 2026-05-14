@@ -1,0 +1,326 @@
+{
+  "version": "1.0.0",
+  "description": "SwissMedPreter mock phrasebook — common medical phrases used by the simulated on-prem LLM. Lookup is by normalized exact match in the source language.",
+  "phrases": [
+    {
+      "id": "greeting-help",
+      "translations": {
+        "de": "Guten Tag, was kann ich für Sie tun?",
+        "en": "Hello, how can I help you?",
+        "fr": "Bonjour, comment puis-je vous aider?",
+        "it": "Buongiorno, come posso aiutarla?",
+        "es": "Hola, ¿cómo puedo ayudarle?",
+        "pt": "Olá, como posso ajudá-lo?",
+        "ar": "مرحبا، كيف يمكنني مساعدتك؟",
+        "tr": "Merhaba, size nasıl yardımcı olabilirim?",
+        "sq": "Përshëndetje, si mund t'ju ndihmoj?",
+        "nl": "Goedendag, hoe kan ik u helpen?",
+        "ru": "Здравствуйте, чем я могу вам помочь?"
+      }
+    },
+    {
+      "id": "show-pain",
+      "translations": {
+        "de": "Können Sie mir zeigen, wo es weh tut?",
+        "en": "Can you show me where it hurts?",
+        "fr": "Pouvez-vous me montrer où ça fait mal?",
+        "it": "Può mostrarmi dove fa male?",
+        "es": "¿Puede mostrarme dónde le duele?",
+        "pt": "Pode mostrar-me onde dói?",
+        "ar": "هل يمكنك أن تريني أين الألم؟",
+        "tr": "Nereniz acıyor gösterebilir misiniz?",
+        "sq": "A mund të më tregoni ku ju dhemb?",
+        "nl": "Kunt u mij laten zien waar het pijn doet?",
+        "ru": "Можете показать, где болит?"
+      }
+    },
+    {
+      "id": "pain-wrist",
+      "translations": {
+        "de": "Haben Sie Schmerzen am Handgelenk?",
+        "en": "Do you have pain in your wrist?",
+        "fr": "Avez-vous mal au poignet?",
+        "it": "Ha dolore al polso?",
+        "es": "¿Tiene dolor en la muñeca?",
+        "pt": "Tem dor no pulso?",
+        "ar": "هل تشعر بألم في معصمك؟",
+        "tr": "Bileğinizde ağrı var mı?",
+        "sq": "A keni dhimbje në kyçin e dorës?",
+        "nl": "Heeft u pijn aan uw pols?",
+        "ru": "У вас болит запястье?"
+      }
+    },
+    {
+      "id": "fever-last-days",
+      "translations": {
+        "de": "Hatten Sie Fieber in den letzten Tagen?",
+        "en": "Have you had a fever in the last few days?",
+        "fr": "Avez-vous eu de la fièvre ces derniers jours?",
+        "it": "Ha avuto febbre negli ultimi giorni?",
+        "es": "¿Ha tenido fiebre en los últimos días?",
+        "pt": "Teve febre nos últimos dias?",
+        "ar": "هل أصبت بالحمى في الأيام القليلة الماضية؟",
+        "tr": "Son birkaç gün ateşiniz oldu mu?",
+        "sq": "A keni pasur temperaturë në ditët e fundit?",
+        "nl": "Heeft u de afgelopen dagen koorts gehad?",
+        "ru": "У вас была температура в последние дни?"
+      }
+    },
+    {
+      "id": "taking-medication",
+      "translations": {
+        "de": "Nehmen Sie aktuell Medikamente?",
+        "en": "Are you currently taking any medication?",
+        "fr": "Prenez-vous actuellement des médicaments?",
+        "it": "Sta assumendo farmaci attualmente?",
+        "es": "¿Está tomando medicación actualmente?",
+        "pt": "Está a tomar medicação atualmente?",
+        "ar": "هل تتناول أي دواء حاليا؟",
+        "tr": "Şu anda ilaç kullanıyor musunuz?",
+        "sq": "A jeni duke marrë barna aktualisht?",
+        "nl": "Neemt u op dit moment medicatie?",
+        "ru": "Принимаете ли вы сейчас лекарства?"
+      }
+    },
+    {
+      "id": "have-allergies",
+      "translations": {
+        "de": "Haben Sie irgendwelche Allergien?",
+        "en": "Do you have any allergies?",
+        "fr": "Avez-vous des allergies?",
+        "it": "Ha qualche allergia?",
+        "es": "¿Tiene alguna alergia?",
+        "pt": "Tem alguma alergia?",
+        "ar": "هل لديك أي حساسية؟",
+        "tr": "Herhangi bir alerjiniz var mı?",
+        "sq": "A keni ndonjë alergji?",
+        "nl": "Heeft u allergieën?",
+        "ru": "У вас есть аллергии?"
+      }
+    },
+    {
+      "id": "deep-breath",
+      "translations": {
+        "de": "Atmen Sie bitte tief ein.",
+        "en": "Please take a deep breath.",
+        "fr": "Veuillez respirer profondément.",
+        "it": "Per favore, faccia un respiro profondo.",
+        "es": "Por favor, respire profundamente.",
+        "pt": "Por favor, respire fundo.",
+        "ar": "من فضلك خذ نفسا عميقا.",
+        "tr": "Lütfen derin bir nefes alın.",
+        "sq": "Ju lutem merrni një frymë të thellë.",
+        "nl": "Adem alstublieft diep in.",
+        "ru": "Пожалуйста, сделайте глубокий вдох."
+      }
+    },
+    {
+      "id": "signs-infection",
+      "translations": {
+        "de": "Ich sehe Anzeichen einer Infektion.",
+        "en": "I see signs of an infection.",
+        "fr": "Je vois des signes d'infection.",
+        "it": "Vedo segni di un'infezione.",
+        "es": "Veo signos de una infección.",
+        "pt": "Vejo sinais de uma infeção.",
+        "ar": "أرى علامات على وجود عدوى.",
+        "tr": "Enfeksiyon belirtileri görüyorum.",
+        "sq": "Shoh shenja të një infeksioni.",
+        "nl": "Ik zie tekenen van een infectie.",
+        "ru": "Я вижу признаки инфекции."
+      }
+    },
+    {
+      "id": "bike-fall-wrist",
+      "translations": {
+        "de": "Ich bin gestern beim Biken gestürzt und kann nun mein Handgelenk nicht mehr bewegen.",
+        "en": "I fell while biking yesterday and now I can't move my wrist.",
+        "fr": "Je suis tombé en faisant du vélo hier et je ne peux plus bouger mon poignet.",
+        "it": "Sono caduto in bicicletta ieri e ora non riesco a muovere il polso.",
+        "es": "Me caí en bicicleta ayer y ahora no puedo mover la muñeca.",
+        "pt": "Caí de bicicleta ontem e agora não consigo mover o pulso.",
+        "ar": "لقد سقطت أمس أثناء ركوب الدراجة وأصبح من الصعب علي تحريك معصمي.",
+        "tr": "Dün bisiklet sürerken düştüm ve şimdi bileğimi hareket ettiremiyorum.",
+        "sq": "Ramë dje duke ngarë biçikletën dhe tani nuk mund ta lëviz kyçin e dorës.",
+        "nl": "Ik ben gisteren tijdens het fietsen gevallen en kan nu mijn pols niet bewegen.",
+        "ru": "Я вчера упал с велосипеда, и теперь не могу двигать запястьем."
+      }
+    },
+    {
+      "id": "head-hurts-morning",
+      "translations": {
+        "de": "Mein Kopf tut sehr weh, seit heute Morgen.",
+        "en": "My head hurts a lot, since this morning.",
+        "fr": "J'ai très mal à la tête depuis ce matin.",
+        "it": "Mi fa molto male la testa da stamattina.",
+        "es": "Me duele mucho la cabeza desde esta mañana.",
+        "pt": "Dói-me muito a cabeça desde esta manhã.",
+        "ar": "رأسي يؤلمني كثيرا منذ هذا الصباح.",
+        "tr": "Bu sabahtan beri başım çok ağrıyor.",
+        "sq": "Më dhemb shumë koka, që nga sot në mëngjes.",
+        "nl": "Mijn hoofd doet erg veel pijn sinds vanochtend.",
+        "ru": "У меня сильно болит голова с сегодняшнего утра."
+      }
+    },
+    {
+      "id": "fever-two-days",
+      "translations": {
+        "de": "Ich habe seit zwei Tagen Fieber.",
+        "en": "I have had a fever for two days.",
+        "fr": "J'ai de la fièvre depuis deux jours.",
+        "it": "Ho la febbre da due giorni.",
+        "es": "Tengo fiebre desde hace dos días.",
+        "pt": "Tenho febre há dois dias.",
+        "ar": "لدي حمى منذ يومين.",
+        "tr": "İki gündür ateşim var.",
+        "sq": "Kam temperaturë prej dy ditësh.",
+        "nl": "Ik heb al twee dagen koorts.",
+        "ru": "У меня температура уже два дня."
+      }
+    },
+    {
+      "id": "daily-bp-meds",
+      "translations": {
+        "de": "Ich nehme jeden Tag Blutdruckmedikamente.",
+        "en": "I take blood pressure medication every day.",
+        "fr": "Je prends des médicaments contre la tension tous les jours.",
+        "it": "Prendo medicine per la pressione ogni giorno.",
+        "es": "Tomo medicación para la presión todos los días.",
+        "pt": "Tomo medicação para a pressão todos os dias.",
+        "ar": "أتناول دواء ضغط الدم كل يوم.",
+        "tr": "Her gün tansiyon ilacı alıyorum.",
+        "sq": "Marr çdo ditë barna për presionin e gjakut.",
+        "nl": "Ik neem elke dag bloeddrukmedicijnen.",
+        "ru": "Я каждый день принимаю лекарство от давления."
+      }
+    },
+    {
+      "id": "allergic-penicillin",
+      "translations": {
+        "de": "Ich bin allergisch gegen Penizillin.",
+        "en": "I am allergic to penicillin.",
+        "fr": "Je suis allergique à la pénicilline.",
+        "it": "Sono allergico alla penicillina.",
+        "es": "Soy alérgico a la penicilina.",
+        "pt": "Sou alérgico à penicilina.",
+        "ar": "لدي حساسية من البنسلين.",
+        "tr": "Penisiline alerjim var.",
+        "sq": "Jam alergjik ndaj penicilinës.",
+        "nl": "Ik ben allergisch voor penicilline.",
+        "ru": "У меня аллергия на пенициллин."
+      }
+    },
+    {
+      "id": "stomach-after-eating",
+      "translations": {
+        "de": "Mein Bauch tut weh, vor allem nach dem Essen.",
+        "en": "My stomach hurts, especially after eating.",
+        "fr": "J'ai mal au ventre, surtout après les repas.",
+        "it": "Mi fa male lo stomaco, soprattutto dopo i pasti.",
+        "es": "Me duele el estómago, especialmente después de comer.",
+        "pt": "Dói-me o estômago, principalmente depois de comer.",
+        "ar": "بطني يؤلمني، خاصة بعد الأكل.",
+        "tr": "Karnım ağrıyor, özellikle yedikten sonra.",
+        "sq": "Më dhemb stomaku, sidomos pas ngrënies.",
+        "nl": "Mijn buik doet pijn, vooral na het eten.",
+        "ru": "У меня болит живот, особенно после еды."
+      }
+    },
+    {
+      "id": "cant-breathe",
+      "translations": {
+        "de": "Ich kann nicht richtig atmen.",
+        "en": "I cannot breathe properly.",
+        "fr": "Je ne peux pas bien respirer.",
+        "it": "Non riesco a respirare bene.",
+        "es": "No puedo respirar bien.",
+        "pt": "Não consigo respirar bem.",
+        "ar": "لا أستطيع التنفس بشكل صحيح.",
+        "tr": "Doğru nefes alamıyorum.",
+        "sq": "Nuk mund të marr frymë si duhet.",
+        "nl": "Ik kan niet goed ademen.",
+        "ru": "Я не могу нормально дышать."
+      }
+    },
+    {
+      "id": "yes",
+      "translations": {
+        "de": "Ja",
+        "en": "Yes",
+        "fr": "Oui",
+        "it": "Sì",
+        "es": "Sí",
+        "pt": "Sim",
+        "ar": "نعم",
+        "tr": "Evet",
+        "sq": "Po",
+        "nl": "Ja",
+        "ru": "Да"
+      }
+    },
+    {
+      "id": "no",
+      "translations": {
+        "de": "Nein",
+        "en": "No",
+        "fr": "Non",
+        "it": "No",
+        "es": "No",
+        "pt": "Não",
+        "ar": "لا",
+        "tr": "Hayır",
+        "sq": "Jo",
+        "nl": "Nee",
+        "ru": "Нет"
+      }
+    },
+    {
+      "id": "thank-you",
+      "translations": {
+        "de": "Danke",
+        "en": "Thank you",
+        "fr": "Merci",
+        "it": "Grazie",
+        "es": "Gracias",
+        "pt": "Obrigado",
+        "ar": "شكرا",
+        "tr": "Teşekkür ederim",
+        "sq": "Faleminderit",
+        "nl": "Dank u",
+        "ru": "Спасибо"
+      }
+    },
+    {
+      "id": "how-feel",
+      "translations": {
+        "de": "Wie fühlen Sie sich?",
+        "en": "How do you feel?",
+        "fr": "Comment vous sentez-vous?",
+        "it": "Come si sente?",
+        "es": "¿Cómo se siente?",
+        "pt": "Como se sente?",
+        "ar": "كيف تشعر؟",
+        "tr": "Nasıl hissediyorsunuz?",
+        "sq": "Si ndiheni?",
+        "nl": "Hoe voelt u zich?",
+        "ru": "Как вы себя чувствуете?"
+      }
+    },
+    {
+      "id": "i-feel-bad",
+      "translations": {
+        "de": "Mir geht es nicht gut.",
+        "en": "I don't feel well.",
+        "fr": "Je ne me sens pas bien.",
+        "it": "Non mi sento bene.",
+        "es": "No me siento bien.",
+        "pt": "Não me sinto bem.",
+        "ar": "لا أشعر بأنني بخير.",
+        "tr": "İyi hissetmiyorum.",
+        "sq": "Nuk ndihem mirë.",
+        "nl": "Ik voel me niet goed.",
+        "ru": "Я плохо себя чувствую."
+      }
+    }
+  ]
+}

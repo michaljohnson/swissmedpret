@@ -120,6 +120,7 @@ swissmedpreter/
 |--------|-------------------------------|----------------------------------------|
 | GET    | `/api/lexicon`                | List all lexicon entries (or `?q=…`)   |
 | GET    | `/api/lexicon/{id}`           | Single entry                            |
+| GET    | `/api/engine`                 | Active translation engine + capabilities |
 | POST   | `/api/conversation/translate` | One-shot translation request           |
 | WS     | `/ws/conversation`            | Real-time turn-taking + translation    |
 
@@ -158,25 +159,49 @@ WebSocket protocol — JSON frames keyed by `type`:
 
 ---
 
-## Notes on the mock translation engine
+## Translation engine
 
-`TranslationService` simulates the on-prem LLM container. It introduces a
-deterministic 700–1400 ms delay per utterance — well under the 2 s
-component-level budget specified in the SA Report.
+`TranslationService` cascades through four layers per utterance:
 
-Plugging in a real LLM:
+1. **LibreTranslate** — real on-prem free translation engine. Enabled when
+   `swissmedpreter.libretranslate.url` (or env var
+   `SWISSMEDPRETER_LIBRETRANSLATE_URL`) is set to a reachable instance, e.g.
+   `http://libretranslate:5000` inside docker compose, or
+   `http://localhost:5050` if you start the container yourself.
+2. **Phrasebook** — exact-match lookup against `phrasebook.json` (20 common
+   medical phrases in 11 languages).
+3. **Lexicon substitution** — replaces known medical terms in-place via
+   `lexicon.json` (handy for German compounds like "Bauchschmerzen").
+4. **Passthrough** — returns the original text untouched if all else fails.
 
-```java
-public TranslationResult translate(String text, String src, String tgt) {
-    return webClient.post()
-        .uri("http://ai-translate.internal:8000/v1/translate")
-        .bodyValue(new LlmRequest(text, src, tgt))
-        .retrieve()
-        .bodyToMono(LlmResponse.class)
-        .map(r -> new TranslationResult(r.text(), r.terms(), r.latencyMs()))
-        .block();
-}
+Each translation response includes the `engine` field so the frontend can
+show which layer actually handled it.
+
+### Running with LibreTranslate via Docker Compose
+
+```bash
+docker compose up --build
 ```
+
+On first run the LibreTranslate container downloads the language packs
+selected via `LT_LOAD_ONLY` in `docker-compose.yml` (≈1–2 GB total, kept in
+the `lt-models` named volume). Subsequent starts are fast.
+
+### Running LibreTranslate alongside a local dev backend
+
+```bash
+docker run -d --rm --name libretranslate -p 5050:5000 \
+    -e LT_LOAD_ONLY="de,en,fr,it,es,ar,tr" \
+    -e LT_DISABLE_WEB_UI=true \
+    libretranslate/libretranslate:latest
+
+# then in backend/
+SWISSMEDPRETER_LIBRETRANSLATE_URL=http://localhost:5050 ./mvnw spring-boot:run
+```
+
+Without any URL set, the backend silently falls back to the bundled
+phrasebook + lexicon mock — the UI still shows side-by-side translations
+for all phrasebook entries.
 
 ---
 
